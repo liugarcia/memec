@@ -605,6 +605,38 @@ function registerNode(nd) {
 }
 function saveNodes() { localStorage.setItem('mc_nodes', JSON.stringify(nodes)); }
 function loadNodes() { nodes = JSON.parse(localStorage.getItem('mc_nodes') || '[]'); }
+
+// ── NAME REGISTRY ─────────────────────────────────────────────────────────────
+// Maps @name (lowercase) → address. Stored in localStorage for local uniqueness.
+function loadNames() { return JSON.parse(localStorage.getItem('mc_names') || '{}'); }
+function saveNames(map) { localStorage.setItem('mc_names', JSON.stringify(map)); }
+
+function isNameTaken(name, excludeAddr) {
+  var map = loadNames();
+  var key = name.trim().toLowerCase();
+  return map[key] && map[key] !== (excludeAddr || '');
+}
+
+function registerName(name, addr) {
+  var map = loadNames();
+  // remove any old name this addr had
+  Object.keys(map).forEach(function(k){ if (map[k] === addr) delete map[k]; });
+  map[name.trim().toLowerCase()] = addr;
+  saveNames(map);
+}
+
+function unregisterName(addr) {
+  var map = loadNames();
+  Object.keys(map).forEach(function(k){ if (map[k] === addr) delete map[k]; });
+  saveNames(map);
+}
+
+function resolveNameToAddr(query) {
+  // returns address if query is a @name, else null
+  var q = query.trim().replace(/^@/, '').toLowerCase();
+  var map = loadNames();
+  return map[q] || null;
+}
 function nodeBadgesHtml(addr) {
   var nd = getNode(addr);
   if (!nd) return '';
@@ -631,6 +663,17 @@ async function createWallet() {
     errEl.classList.add('show');
     return;
   }
+  // validate: name can only contain letters, numbers, _ and -
+  if (!/^[a-zA-Z0-9_\-À-ÿ]+$/.test(n)) {
+    errEl.textContent = 'Nome inválido. Use apenas letras, números, _ ou -.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (isNameTaken(n, null)) {
+    errEl.textContent = '@' + n + ' já está em uso. Escolha outro nome.';
+    errEl.classList.add('show');
+    return;
+  }
   errEl.classList.remove('show');
   btn.disabled = true;
   btn.textContent = 'GERANDO...';
@@ -654,6 +697,7 @@ async function createWallet() {
       };
       registerNode(wallet.nodeData);
     }
+    registerName(n, addr);
     localStorage.setItem('mc_w', JSON.stringify(wallet));
     closeWS();
   } catch(e) {
@@ -682,6 +726,11 @@ async function importWallet() {
     var d = JSON.parse(raw);
     if (!d.name || !d.privateKeyJwk || !d.publicKeyJwk) throw new Error('Campos obrigatórios ausentes');
     wallet = d;
+    // register name — if name is taken by a different address, append truncated address
+    if (isNameTaken(wallet.name, wallet.address)) {
+      wallet.name = wallet.name + '_' + wallet.address.substring(2,6);
+    }
+    registerName(wallet.name, wallet.address);
     localStorage.setItem('mc_w', JSON.stringify(wallet));
     if (wallet.nodeData && !getNode(wallet.address)) registerNode(wallet.nodeData);
     closeWS();
@@ -726,6 +775,7 @@ function updateWUI() {
 
 function logoutWallet() {
   if (!confirm('⚠️ Tem certeza?\n\nIsso vai APAGAR sua carteira desta máquina.\nVocê precisará do arquivo de backup para acessá-la novamente.')) return;
+  if (wallet) unregisterName(wallet.address);
   localStorage.removeItem('mc_w');
   wallet = null;
   var hlb = document.getElementById('headerLogoutBtn');
