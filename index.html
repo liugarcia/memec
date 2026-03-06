@@ -793,6 +793,28 @@ function closeM(e){if(e.target===document.getElementById('MOV'))closeMD();}
 function closeMD(){document.getElementById('MOV').classList.remove('show');}
 function closeTipM(e){if(e.target===document.getElementById('TIPMOV'))document.getElementById('TIPMOV').classList.remove('show');}
 
+// ══ EXPOSE TO GLOBAL SCOPE (needed for Vercel / strict mode) ══
+window.wTab=wTab;
+window.createWallet=createWallet;
+window.importWallet=importWallet;
+window.skipW=skipW;
+window.toggleNodeReg=toggleNodeReg;
+window.toggleTip=toggleTip;
+window.handleFile=handleFile;
+window.mintMeme=mintMeme;
+window.showP=showP;
+window.openBlk=openBlk;
+window.openNP=openNP;
+window.closeNP=closeNP;
+window.closeM=closeM;
+window.closeMD=closeMD;
+window.closeTipM=closeTipM;
+window.openTipModal=openTipModal;
+window.copyAddr=copyAddr;
+window.doVerify=doVerify;
+window.expW=expW;
+window.renderProfile=renderProfile;
+
 // INIT
 loadNodes();
 const sw=localStorage.getItem('mc_w');
