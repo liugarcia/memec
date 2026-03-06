@@ -239,12 +239,20 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .viw input:focus{border-color:var(--yellow)}
 .vbtn{background:var(--yellow);color:var(--black);border:none;font-family:var(--display);font-size:.9rem;letter-spacing:2px;padding:0 18px;cursor:pointer;transition:background .2s}
 .vbtn:hover{background:var(--white)}
-.vres{padding:18px;border:1px solid var(--gray3);background:var(--gray);display:none}
+.vres{background:var(--gray);border:1px solid var(--gray3);display:none}
 .vres.show{display:block;animation:up .3s ease}
 .vres.valid{border-color:var(--green)}.vres.invalid{border-color:var(--red)}
 .vstat{font-family:var(--display);font-size:1.5rem;letter-spacing:2px;margin-bottom:11px}
 .vres.valid .vstat{color:var(--green)}.vres.invalid .vstat{color:var(--red)}
-.vmimg{max-width:220px;max-height:220px;margin:11px 0;display:block}
+/* Explorer rows */
+.exrow{display:grid;grid-template-columns:120px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:start}
+.exrow:last-child{border-bottom:none}
+.exlabel{font-family:var(--mono);font-size:.52rem;text-transform:uppercase;letter-spacing:1px;color:#555;padding-top:2px}
+.exval{font-family:var(--mono);font-size:.68rem;color:var(--white);line-height:1.6;word-break:break-all}
+.exlink{color:var(--yellow)!important;cursor:pointer;text-decoration:underline;text-decoration-style:dotted}
+.exlink:hover{color:var(--white)!important}
+.exmeme{background:var(--gray2);border:1px solid var(--gray3);cursor:pointer;transition:border-color .2s;overflow:hidden}
+.exmeme:hover{border-color:var(--yellow)}
 
 /* PROFILE */
 .phdr{display:flex;align-items:center;gap:18px;margin-bottom:28px;padding:20px;background:var(--gray);border:1px solid var(--gray3)}
@@ -299,7 +307,14 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
       </div>
       <div class="wp active" id="wp-create">
         <div class="wi">Criptografia ECDSA P-256 gerada no browser. Sua chave privada <b>nunca sai do dispositivo.</b></div>
-        <div class="wf"><label>Nome / Apelido *</label><input type="text" id="cName" placeholder="ex: MemeKing2024" maxlength="40"></div>
+        <div class="wf">
+          <label>Seu @ na MemeChain *</label>
+          <div style="display:flex;align-items:center;gap:0">
+            <span style="font-family:var(--mono);font-size:.85rem;color:var(--yellow);background:var(--black);border:1px solid var(--gray3);border-right:none;padding:9px 10px;line-height:1">@</span>
+            <input type="text" id="cName" placeholder="ex: MemeKing2024" maxlength="40" style="flex:1">
+          </div>
+          <div style="font-family:var(--mono);font-size:.52rem;color:#555;margin-top:4px">Único e permanente. Apenas letras, números, _ e -</div>
+        </div>
         <div class="wsect">💰 Endereços para gorjetas (opcional)</div>
         <div id="wCoinList"></div>
         <button type="button" id="wAddCoinBtn" class="add-coin-btn">+ Adicionar blockchain</button>
@@ -356,7 +371,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
   <button class="tab active" data-panel="mint">⛏ Mintar</button>
   <button class="tab" data-panel="chain">🔗 Chain</button>
   <button class="tab" data-panel="nodes">🖥 Nós</button>
-  <button class="tab" data-panel="verify">✓ Verificar</button>
+  <button class="tab" data-panel="verify">🔍 Explorador</button>
   <button class="tab" data-panel="profile">👤 Carteira</button>
 </div>
 
@@ -421,15 +436,18 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
     <div id="NL"></div>
   </div>
 
-  <!-- VERIFY -->
+  <!-- EXPLORER -->
   <div class="panel" id="panel-verify">
-    <div class="slabel">Verificar hash e assinatura</div>
-    <div class="vsec">
-      <div class="viw">
-        <input type="text" id="VI" placeholder="Cole o hash do bloco..."/>
-        <button class="vbtn" id="verifyBtn">VERIFICAR</button>
+    <div class="slabel">Explorador de blocos</div>
+    <div class="vsec" style="max-width:700px">
+      <div style="font-family:var(--mono);font-size:.56rem;color:#555;line-height:1.9;margin-bottom:14px;padding:10px;background:var(--gray);border-left:2px solid var(--yellow)">
+        Busque por <b style="color:var(--yellow)">hash de bloco</b>, <b style="color:var(--yellow)">@nome</b> ou <b style="color:var(--yellow)">endereço de carteira</b>
       </div>
-      <div class="vres" id="VR"><div class="vstat" id="VS"></div><img class="vmimg" id="VIM" style="display:none"/><div id="VD"></div></div>
+      <div class="viw">
+        <input type="text" id="VI" placeholder="Hash, @nome ou endereço..."/>
+        <button class="vbtn" id="verifyBtn">BUSCAR</button>
+      </div>
+      <div id="VR"></div>
     </div>
   </div>
 
@@ -762,9 +780,9 @@ function updateWUI() {
   var c   = wallet.color;
   [av, sav].forEach(function(x){ x.textContent=ini; x.style.background=c; x.style.color='#000'; });
   var bdg = nodeBadgesHtml(wallet.address);
-  nm.innerHTML = wallet.name + (bdg ? '&nbsp;'+bdg : '');
+  nm.innerHTML = '@' + wallet.name + (bdg ? '&nbsp;'+bdg : '');
   ad.textContent = wallet.address;
-  sn.innerHTML = wallet.name + (bdg ? '&nbsp;'+bdg : '');
+  sn.innerHTML = '@' + wallet.name + (bdg ? '&nbsp;'+bdg : '');
   sa.textContent = wallet.address;
   sb.style.display = 'flex';
   var hlb = document.getElementById('headerLogoutBtn');
@@ -1223,34 +1241,118 @@ function renderProfile() {
 // ══════════════════════════════════════════
 // VERIFY
 // ══════════════════════════════════════════
+// ══ BLOCK EXPLORER ════════════════════════════════════════════════════════════
 async function doVerify() {
   var inp = (document.getElementById('VI') || {}).value || '';
   inp = inp.trim();
-  var vr = document.getElementById('VR'), vs = document.getElementById('VS');
-  var vi = document.getElementById('VIM'), vd = document.getElementById('VD');
-  if (!inp) return;
-  var blk = chain.find(function(b){ return b.hash === inp || b.hash.startsWith(inp); });
-  if (!blk) {
-    vr.className = 'vres show invalid'; vs.textContent = '✕ NÃO ENCONTRADO';
-    vi.style.display = 'none';
-    vd.innerHTML = '<p style="font-family:var(--mono);font-size:.66rem;color:#666">Nenhum bloco com esse hash.</p>';
+  var vr = document.getElementById('VR');
+  if (!inp || !vr) return;
+
+  var q = inp.replace(/^@/, '').toLowerCase();
+
+  // ── 1. Try hash match ──────────────────────────────────────────────────────
+  var blkByHash = chain.find(function(b){ return b.hash === inp || b.hash.startsWith(inp); });
+  if (blkByHash) { await renderExplorerBlock(vr, blkByHash); return; }
+
+  // ── 2. Try @name ───────────────────────────────────────────────────────────
+  var addrByName = resolveNameToAddr(q);
+  var searchAddr = addrByName || (inp.startsWith('0x') ? inp : null);
+
+  if (searchAddr) {
+    var addrBlocks = chain.filter(function(b){ return b.address === searchAddr; });
+    var ownerName = addrByName ? inp.replace(/^@/,'') : null;
+    // also check if this is a node
+    var nd = getNode(searchAddr);
+    renderExplorerAddress(vr, searchAddr, ownerName, addrBlocks, nd);
     return;
   }
-  var r = await verifyBlock(blk);
-  vr.className = 'vres show ' + (r.hashOk ? 'valid' : 'invalid');
-  vs.textContent = r.hashOk ? '✓ AUTÊNTICO' : '⚠ CORROMPIDO';
-  if (blk.imageHex) { vi.src = hex64(blk.imageHex); vi.style.display = 'block'; }
-  else vi.style.display = 'none';
-  var nd = blk.nodeAddress ? getNode(blk.nodeAddress) : null;
-  vd.innerHTML = '<div class="hdisp">' +
-    '<b>MEME</b>'+blk.name+
-    '<b>CRIADOR</b>'+blk.creator+
-    '<b>NÓ</b>'+(nd ? nd.name+(nd.isFounder?' ★':'') : '—')+
-    '<b>GORJETAS</b>'+(hasTips(blk.tips) ? COINS.filter(function(c){return blk.tips[c.id];}).map(function(c){return c.sym;}).join(', ') : '—')+
-    '<b>ASSINATURA</b><span style="color:'+(r.sigOk?'var(--green)':blk.signature?'var(--red)':'#555')+'">'+(blk.signature?(r.sigOk?'✓ VÁLIDA':'⚠ INVÁLIDA'):'—')+'</span>'+
-    '<b>INTEGRIDADE</b><span style="color:'+(r.hashOk?'var(--green)':'var(--red)')+'">'+( r.hashOk?'✓ ÍNTEGRO':'⚠ CORROMPIDO')+'</span>'+
-    '<b>DATA</b>'+new Date(blk.timestamp).toLocaleString('pt-BR')+
+
+  // ── 3. Try name without @ (partial) ───────────────────────────────────────
+  var nameBlocks = chain.filter(function(b){
+    return b.creator && b.creator.toLowerCase() === q;
+  });
+  if (nameBlocks.length) {
+    var addr2 = nameBlocks[0].address;
+    var nd2   = getNode(addr2);
+    renderExplorerAddress(vr, addr2, q, nameBlocks, nd2);
+    return;
+  }
+
+  // ── 4. Nothing found ──────────────────────────────────────────────────────
+  vr.innerHTML = '<div class="vres show invalid" style="padding:20px">' +
+    '<div class="vstat" style="font-size:1.2rem">✕ NÃO ENCONTRADO</div>' +
+    '<div style="font-family:var(--mono);font-size:.6rem;color:#666;margin-top:8px">Nenhum bloco, endereço ou @nome encontrado para: <b style=\"color:var(--white)\">' + inp + '</b></div>' +
     '</div>';
+}
+
+async function renderExplorerBlock(container, blk) {
+  var r   = await verifyBlock(blk);
+  var nd  = blk.nodeAddress ? getNode(blk.nodeAddress) : null;
+  var tags = blk.tags && blk.tags.length ? blk.tags.map(function(t){ return '<span class="tag">'+t+'</span>'; }).join('') : '—';
+  var img  = blk.imageHex ? '<img style="max-width:100%;max-height:240px;object-fit:contain;background:var(--black);display:block;margin-bottom:16px" src="'+hex64(blk.imageHex)+'"/>' : '';
+  container.innerHTML =
+    '<div class="vres show '+(r.hashOk?'valid':'invalid')+'" style="padding:0;overflow:hidden">' +
+    '<div style="background:'+(r.hashOk?'rgba(0,255,136,.07)':'rgba(255,45,45,.07)')+';padding:14px 18px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;gap:10px">' +
+      '<span style="font-family:var(--display);font-size:1.4rem;letter-spacing:2px;color:'+(r.hashOk?'var(--green)':'var(--red)')+'">'+  (r.hashOk?'✓ AUTÊNTICO':'⚠ CORROMPIDO')+'</span>' +
+      '<span style="font-family:var(--mono);font-size:.55rem;color:#666;margin-left:auto">BLOCO #'+blk.index+'</span>' +
+    '</div>' +
+    '<div style="padding:18px">' + img +
+    '<div class="exrow"><div class="exlabel">Meme</div><div class="exval" style="font-size:.9rem;font-weight:700">'+blk.name+'</div></div>' +
+    (blk.desc?'<div class="exrow"><div class="exlabel">Descrição</div><div class="exval">'+blk.desc+'</div></div>':'')+
+    '<div class="exrow"><div class="exlabel">Tags</div><div class="exval">'+tags+'</div></div>' +
+    '<div class="exrow"><div class="exlabel">Criador</div><div class="exval exlink" data-search="'+blk.creator+'">@'+blk.creator+'</div></div>' +
+    '<div class="exrow"><div class="exlabel">Endereço</div><div class="exval exlink" style="color:var(--yellow)" data-search="'+blk.address+'">'+blk.address+'</div></div>' +
+    (nd?'<div class="exrow"><div class="exlabel">Nó Validador</div><div class="exval exlink" data-search="'+(nd.address)+'">'+nd.name+(nd.isFounder?' ★ FUNDADOR':'')+'</div></div>':'')+
+    '<div class="exrow"><div class="exlabel">Assinatura</div><div class="exval" style="color:'+(r.sigOk?'var(--green)':blk.signature?'var(--red)':'#555')+'">'+(blk.signature?(r.sigOk?'✓ VÁLIDA':'⚠ INVÁLIDA'):'sem assinatura')+'</div></div>'+
+    '<div class="exrow"><div class="exlabel">Hash</div><div class="exval" style="color:var(--yellow);font-size:.56rem;word-break:break-all">'+blk.hash+'</div></div>' +
+    '<div class="exrow"><div class="exlabel">Bloco anterior</div><div class="exval" style="font-size:.54rem;color:#555;word-break:break-all">'+blk.prevHash+'</div></div>' +
+    '<div class="exrow"><div class="exlabel">Data</div><div class="exval">'+new Date(blk.timestamp).toLocaleString('pt-BR')+'</div></div>' +
+    '</div></div>';
+  // bind clickable links
+  container.querySelectorAll('.exlink').forEach(function(el){
+    el.addEventListener('click', function(){
+      document.getElementById('VI').value = el.dataset.search;
+      doVerify();
+    });
+  });
+}
+
+function renderExplorerAddress(container, addr, name, blocks, nd) {
+  var bdg = nd ? (nd.isFounder?'<span class="badge badge-founder">★ FUNDADOR</span>':'') + '<span class="badge badge-node">🖥 NÓ</span>' : '';
+  var memeGrid = blocks.length
+    ? '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:12px">' +
+      blocks.map(function(b){
+        return '<div class="exmeme" data-hash="'+b.hash+'">' +
+          '<img src="'+hex64(b.imageHex)+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" loading="lazy"/>' +
+          '<div style="padding:5px 7px;font-family:var(--mono);font-size:.5rem;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+b.name+'</div>' +
+          '</div>';
+      }).join('') + '</div>'
+    : '<div style="font-family:var(--mono);font-size:.6rem;color:#444;padding:16px 0">Nenhum meme encontrado.</div>';
+  container.innerHTML =
+    '<div class="vres show valid" style="padding:0;overflow:hidden">' +
+    '<div style="background:rgba(0,255,136,.07);padding:14px 18px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;gap:10px">' +
+      '<div style="width:36px;height:36px;border-radius:50%;background:'+rndColor(addr)+';display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:.75rem;color:#000;flex-shrink:0">'+(name?name.substring(0,2).toUpperCase():'??')+'</div>' +
+      '<div>' +
+        '<div style="font-family:var(--display);font-size:1.3rem;letter-spacing:2px">@'+(name||'desconhecido')+' '+bdg+'</div>' +
+        '<div style="font-family:var(--mono);font-size:.52rem;color:#666">'+addr+'</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="padding:18px">' +
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:18px">' +
+      '<div style="background:var(--gray2);padding:12px 16px"><div style="font-family:var(--display);font-size:1.6rem;color:var(--yellow)">'+blocks.length+'</div><div style="font-family:var(--mono);font-size:.52rem;color:#555">MEMES</div></div>' +
+      '<div style="background:var(--gray2);padding:12px 16px"><div style="font-family:var(--display);font-size:1.6rem;color:var(--yellow)">'+(nd?'✓':'—')+'</div><div style="font-family:var(--mono);font-size:.52rem;color:#555">'+(nd?'NÓ ATIVO':'SEM NÓ')+'</div></div>' +
+      '<div style="background:var(--gray2);padding:12px 16px"><div style="font-family:var(--display);font-size:1.6rem;color:var(--yellow)">'+(blocks.length?new Date(blocks[blocks.length-1].timestamp).toLocaleDateString('pt-BR'):'—')+'</div><div style="font-family:var(--mono);font-size:.52rem;color:#555">PRIMEIRO MEME</div></div>' +
+    '</div>' +
+    '<div style="font-family:var(--mono);font-size:.56rem;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Memes mintados</div>' +
+    memeGrid +
+    '</div></div>';
+  // bind meme clicks
+  container.querySelectorAll('.exmeme').forEach(function(el){
+    el.addEventListener('click', function(){
+      document.getElementById('VI').value = el.dataset.hash;
+      doVerify();
+    });
+  });
 }
 
 // ══════════════════════════════════════════
@@ -1426,6 +1528,8 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       wallet = JSON.parse(sw);
       if (wallet.nodeData && !getNode(wallet.address)) registerNode(wallet.nodeData);
+      // ensure name is registered (in case registry was cleared)
+      registerName(wallet.name, wallet.address);
       document.getElementById('WS').classList.add('hidden');
       updateWUI();
       loadChain();
