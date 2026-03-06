@@ -52,16 +52,22 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .nt-label{font-family:var(--mono);font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:1px;pointer-events:none}
 .node-fields{display:none;margin-top:10px}.node-fields.show{display:block}
 
-/* COIN INPUT */
-.coin-input{display:flex;align-items:center;margin-bottom:8px}
-.coin-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0;font-weight:700;font-family:var(--mono)}
-.coin-input input{flex:1;background:var(--black);border:1px solid var(--gray3);color:var(--white);font-family:var(--mono);font-size:.65rem;padding:8px 10px;outline:none;transition:border-color .2s}
-.coin-input input:focus{border-color:var(--yellow)}
-.ci-btc .coin-icon{background:rgba(247,147,26,.15);color:var(--btc);border:1px solid rgba(247,147,26,.3)}
-.ci-eth .coin-icon{background:rgba(98,126,234,.15);color:var(--eth);border:1px solid rgba(98,126,234,.3)}
-.ci-bnb .coin-icon{background:rgba(240,185,11,.15);color:var(--bnb);border:1px solid rgba(240,185,11,.3)}
-.ci-xmr .coin-icon{background:rgba(255,102,0,.15);color:var(--xmr);border:1px solid rgba(255,102,0,.3)}
-.ci-wow .coin-icon{background:rgba(255,105,180,.15);color:var(--wow);border:1px solid rgba(255,105,180,.3)}
+/* COIN ROWS — dynamic dropdown system */
+.coin-row{display:flex;align-items:center;gap:0;margin-bottom:7px}
+.coin-sel{background:var(--black);border:1px solid var(--gray3);border-right:none;color:var(--yellow);font-family:var(--mono);font-size:.62rem;padding:8px 8px;outline:none;cursor:pointer;flex-shrink:0;min-width:90px;appearance:none;-webkit-appearance:none}
+.coin-sel:focus{border-color:var(--yellow)}
+.coin-sel option{background:var(--black);color:var(--white)}
+.coin-addr-inp{flex:1;background:var(--black);border:1px solid var(--gray3);border-right:none;color:var(--white);font-family:var(--mono);font-size:.64rem;padding:8px 10px;outline:none;transition:border-color .2s}
+.coin-addr-inp:focus{border-color:var(--yellow)}
+.coin-row-del{background:var(--black);border:1px solid var(--gray3);color:#555;font-size:.7rem;padding:8px 10px;cursor:pointer;transition:all .2s;flex-shrink:0}
+.coin-row-del:hover{color:var(--red);border-color:var(--red)}
+.add-coin-btn{background:transparent;border:1px dashed var(--gray3);color:#666;font-family:var(--mono);font-size:.57rem;text-transform:uppercase;letter-spacing:1px;padding:7px 12px;cursor:pointer;transition:all .2s;width:100%;margin-top:4px}
+.add-coin-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+/* edit tips button in profile */
+.edit-tips-btn{background:transparent;border:1px solid var(--gray3);color:#888;font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:1px;padding:5px 10px;cursor:pointer;transition:all .2s;margin-left:8px}
+.edit-tips-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.tips-edit-section{display:none;background:var(--gray2);border:1px solid var(--gray3);padding:14px;margin-top:10px}
+.tips-edit-section.show{display:block}
 
 /* HEADER */
 header{border-bottom:2px solid var(--yellow);padding:12px 34px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--black);z-index:100}
@@ -293,11 +299,8 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
         <div class="wi">Criptografia ECDSA P-256 gerada no browser. Sua chave privada <b>nunca sai do dispositivo.</b></div>
         <div class="wf"><label>Nome / Apelido *</label><input type="text" id="cName" placeholder="ex: MemeKing2024" maxlength="40"></div>
         <div class="wsect">💰 Endereços para gorjetas (opcional)</div>
-        <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="wBtc" placeholder="Bitcoin (BTC)"></div>
-        <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="wEth" placeholder="Ethereum (ETH)"></div>
-        <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="wBnb" placeholder="BNB / EVM"></div>
-        <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="wXmr" placeholder="Monero (XMR)"></div>
-        <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="wWow" placeholder="Wownero (WOW)"></div>
+        <div id="wCoinList"></div>
+        <button type="button" id="wAddCoinBtn" class="add-coin-btn">+ Adicionar blockchain</button>
         <button class="node-toggle" id="nodeToggleBtn">
           <div class="nt-check" id="ntCheck">✓</div>
           <div class="nt-label">Quero registrar um nó 🖥</div>
@@ -343,6 +346,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
       <div class="wav" id="hAv"></div>
       <div><div class="wbn" id="hNm">—</div><div class="wba" id="hAd">sem carteira</div></div>
     </div>
+    <button id="headerLogoutBtn" title="Sair e apagar carteira desta máquina" style="display:none;background:transparent;border:1px solid #333;color:#555;font-size:.8rem;padding:6px 9px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">🚪</button>
   </div>
 </header>
 
@@ -378,12 +382,9 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
             <div class="tip-label">💰 Aceitar gorjetas neste meme</div>
           </button>
           <div class="tip-fields" id="tipFields">
-            <div style="font-family:var(--mono);font-size:.52rem;color:#555;margin-bottom:8px;margin-top:6px">Deixe vazio para herdar da carteira</div>
-            <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="mBtc" placeholder="Bitcoin"></div>
-            <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="mEth" placeholder="Ethereum"></div>
-            <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="mBnb" placeholder="BNB / EVM"></div>
-            <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="mXmr" placeholder="Monero"></div>
-            <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="mWow" placeholder="Wownero"></div>
+            <div style="font-family:var(--mono);font-size:.52rem;color:#555;margin-bottom:8px;margin-top:6px">Preenchido automaticamente da sua carteira. Edite se quiser endereços diferentes.</div>
+            <div id="mCoinList"></div>
+            <button type="button" id="mAddCoinBtn" class="add-coin-btn">+ Adicionar blockchain</button>
           </div>
         </div>
         <div>
@@ -520,13 +521,45 @@ function rndColor(s) {
 // TIPS
 // ══════════════════════════════════════════
 function readCoinInputs(prefix) {
+  // reads from dynamic coin list rows
+  var listId = prefix + 'CoinList';
+  var list = document.getElementById(listId);
+  if (!list) return null;
   var t = {};
-  COINS.forEach(function(c) {
-    var key = prefix + c.id.charAt(0).toUpperCase() + c.id.slice(1);
-    var el = document.getElementById(key);
-    if (el && el.value.trim()) t[c.id] = el.value.trim();
+  list.querySelectorAll('.coin-row').forEach(function(row) {
+    var sel = row.querySelector('.coin-sel');
+    var inp = row.querySelector('.coin-addr-inp');
+    if (sel && inp && inp.value.trim()) t[sel.value] = inp.value.trim();
   });
   return Object.keys(t).length ? t : null;
+}
+
+function buildCoinRow(listId, coinId, addr) {
+  var list = document.getElementById(listId);
+  if (!list) return;
+  var row = document.createElement('div');
+  row.className = 'coin-row';
+  var usedIds = Array.from(list.querySelectorAll('.coin-sel')).map(function(s){ return s.value; });
+  var options = COINS.map(function(c) {
+    var sel = c.id === coinId ? ' selected' : '';
+    var dis = (usedIds.indexOf(c.id) > -1 && c.id !== coinId) ? ' disabled' : '';
+    return '<option value="'+c.id+'"'+sel+dis+'>'+c.icon+' '+c.sym+'</option>';
+  }).join('');
+  row.innerHTML =
+    '<select class="coin-sel">'+options+'</select>' +
+    '<input class="coin-addr-inp" type="text" placeholder="Endereço..." value="'+(addr||'')+'">' +
+    '<button type="button" class="coin-row-del" title="Remover">✕</button>';
+  row.querySelector('.coin-row-del').addEventListener('click', function(){ row.remove(); });
+  list.appendChild(row);
+}
+
+function initCoinList(listId, tips) {
+  var list = document.getElementById(listId);
+  if (!list) return;
+  list.innerHTML = '';
+  if (tips) {
+    COINS.forEach(function(c){ if (tips[c.id]) buildCoinRow(listId, c.id, tips[c.id]); });
+  }
 }
 function hasTips(obj) {
   if (!obj) return false;
@@ -683,8 +716,26 @@ function updateWUI() {
   sn.innerHTML = wallet.name + (bdg ? '&nbsp;'+bdg : '');
   sa.textContent = wallet.address;
   sb.style.display = 'flex';
+  var hlb = document.getElementById('headerLogoutBtn');
+  if (hlb) hlb.style.display = 'block';
   checkMR();
   updH();
+}
+
+function logoutWallet() {
+  if (!confirm('⚠️ Tem certeza?\n\nIsso vai APAGAR sua carteira desta máquina.\nVocê precisará do arquivo de backup para acessá-la novamente.')) return;
+  localStorage.removeItem('mc_w');
+  wallet = null;
+  var hlb = document.getElementById('headerLogoutBtn');
+  if (hlb) hlb.style.display = 'none';
+  // reset UI
+  var av  = document.getElementById('hAv');
+  var nm  = document.getElementById('hNm');
+  var ad  = document.getElementById('hAd');
+  if(av){av.textContent='?';av.style.background='#333';}
+  if(nm) nm.innerHTML = 'Visitante';
+  if(ad) ad.textContent = 'sem carteira';
+  document.getElementById('WS').classList.remove('hidden');
 }
 
 // ══════════════════════════════════════════
@@ -1028,29 +1079,93 @@ function renderProfile() {
       '</div>' +
       (nd ? '<button class="tip-btn" id="nodeProfileBtn">Perfil do nó →</button>' : '') +
     '</div>' +
-    (coins ? '<div class="slabel">💰 Meus endereços de gorjeta</div><div style="margin-bottom:28px">'+coins+'</div>' : '') +
+    '<div class="slabel" style="margin-bottom:10px">💰 Gorjetas' +
+      '<button class="edit-tips-btn" id="editTipsBtn">' + (hasTips(wallet.tips) ? '✎ editar' : '+ adicionar') + '</button>' +
+    '</div>' +
+    '<div class="tips-edit-section" id="tipsEditSection">' +
+      '<div id="profileCoinList"></div>' +
+      '<button type="button" id="profileAddCoinBtn" class="add-coin-btn">+ Adicionar blockchain</button>' +
+      '<div style="display:flex;gap:8px;margin-top:10px">' +
+        '<button id="saveTipsBtn" class="wbtn" style="font-size:.7rem;letter-spacing:1px;padding:9px;max-width:160px;margin-top:0">SALVAR</button>' +
+        '<button id="cancelTipsBtn" class="wbtn sec" style="max-width:120px;margin-top:0">CANCELAR</button>' +
+      '</div>' +
+    '</div>' +
+    (coins ? '<div style="margin-bottom:28px">'+coins+'</div>' : '<div style="font-family:var(--mono);font-size:.58rem;color:#444;margin-bottom:24px">Nenhum endereço cadastrado.</div>') +
     '<div class="slabel">Meus Memes</div>' +
     '<div class="pmemes" style="margin-bottom:28px">'+mg+'</div>' +
-    '<div class="slabel">Exportar Carteira</div>' +
-    '<div style="background:var(--gray);border:1px solid var(--gray3);padding:14px;margin-bottom:9px">' +
-      '<div style="font-family:var(--mono);font-size:.56rem;color:#555;line-height:1.9">Guarde em local seguro. <span style="color:var(--red)">Nunca compartilhe a chave privada.</span></div>' +
-    '</div>' +
-    '<button class="wbtn" id="exportWalletBtn" style="max-width:260px;font-size:.7rem;letter-spacing:2px;padding:10px">↓ BAIXAR CHAVE PRIVADA</button>';
+    '<div class="slabel">Segurança</div>' +
+    '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+      '<button class="wbtn" id="exportWalletBtn" style="max-width:260px;font-size:.7rem;letter-spacing:2px;padding:10px;margin-top:0">↓ BACKUP DAS CHAVES (.txt)</button>' +
+      '<button id="logoutBtn" style="display:flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--red);color:var(--red);font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:1px;padding:10px 16px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,45,45,.1)'" onmouseout="this.style.background='transparent'">🚪 SAIR E APAGAR CARTEIRA</button>' +
+    '</div>';
   // bind events
   pc.querySelectorAll('.tip-addr-box').forEach(bindCopy);
   pc.querySelectorAll('.pmeme').forEach(function(el){
     el.addEventListener('click', function(){ openBlk(parseInt(el.dataset.blk)); });
   });
+  // edit tips toggle
+  var etBtn = document.getElementById('editTipsBtn');
+  if (etBtn) etBtn.addEventListener('click', function() {
+    var sec = document.getElementById('tipsEditSection');
+    var isOpen = sec.classList.toggle('show');
+    if (isOpen) {
+      initCoinList('profileCoinList', wallet.tips);
+      var addBtn = document.getElementById('profileAddCoinBtn');
+      if (addBtn) addBtn.addEventListener('click', function(){ buildCoinRow('profileCoinList', null, ''); });
+    }
+  });
+  var saveTipsBtn = document.getElementById('saveTipsBtn');
+  if (saveTipsBtn) saveTipsBtn.addEventListener('click', function() {
+    var newTips = readCoinInputs('profile');
+    wallet.tips = newTips;
+    // update node data tips too
+    if (wallet.nodeData) { wallet.nodeData.tips = newTips; var nd = getNode(wallet.address); if(nd) { nd.tips = newTips; saveNodes(); } }
+    localStorage.setItem('mc_w', JSON.stringify(wallet));
+    renderProfile();
+  });
+  var cancelTipsBtn = document.getElementById('cancelTipsBtn');
+  if (cancelTipsBtn) cancelTipsBtn.addEventListener('click', function() {
+    document.getElementById('tipsEditSection').classList.remove('show');
+  });
   var npBtn = document.getElementById('nodeProfileBtn');
   if (npBtn) npBtn.addEventListener('click', function(){ openNP(wallet.address); });
   var expBtn = document.getElementById('exportWalletBtn');
   if (expBtn) expBtn.addEventListener('click', function(){
-    var blob = new Blob([JSON.stringify(wallet)], {type:'application/json'});
+    // Export only public + private key as plain text (like Bitcoin paper wallet)
+    var pub = wallet.publicKeyJwk;
+    var priv = wallet.privateKeyJwk;
+    var txt = [
+      '================================================',
+      '         MEMECHAIN — BACKUP DE CHAVES',
+      '================================================',
+      '',
+      'NOME: ' + wallet.name,
+      'ENDEREÇO: ' + wallet.address,
+      '',
+      '--- CHAVE PÚBLICA (JWK P-256) ---',
+      JSON.stringify(pub, null, 2),
+      '',
+      '--- CHAVE PRIVADA (JWK P-256) ---',
+      JSON.stringify(priv, null, 2),
+      '',
+      '================================================',
+      'ATENÇÃO: Guarde este arquivo em local seguro.',
+      'Nunca compartilhe sua chave privada com ninguém.',
+      'Para importar: use a aba "Importar" na MemeChain',
+      'e cole o JSON completo da carteira.',
+      '================================================',
+      '',
+      '--- JSON COMPLETO (para importar) ---',
+      JSON.stringify({name:wallet.name,address:wallet.address,publicKeyJwk:pub,privateKeyJwk:priv,color:wallet.color,isNode:wallet.isNode,tips:wallet.tips,nodeData:wallet.nodeData||null})
+    ].join('\n');
+    var blob = new Blob([txt], {type:'text/plain'});
     var u = URL.createObjectURL(blob);
     var a = document.createElement('a');
-    a.href = u; a.download = 'mc-wallet-'+wallet.name+'.json';
+    a.href = u; a.download = 'memechain-keys-'+wallet.name+'.txt';
     a.click(); URL.revokeObjectURL(u);
   });
+  var logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.addEventListener('click', logoutWallet);
 }
 
 // ══════════════════════════════════════════
@@ -1133,13 +1248,24 @@ document.addEventListener('DOMContentLoaded', function() {
     else           { chk.classList.remove('on'); fld.classList.remove('show'); }
   });
 
-  // tip toggle
+  // tip toggle — auto-fills from wallet tips when opened
   document.getElementById('tipToggleBtn').addEventListener('click', function() {
     isTipOpen = !isTipOpen;
     var chk = document.getElementById('tipCheck');
     var fld = document.getElementById('tipFields');
-    if (isTipOpen) { chk.classList.add('on'); fld.classList.add('show'); }
-    else           { chk.classList.remove('on'); fld.classList.remove('show'); }
+    if (isTipOpen) {
+      chk.classList.add('on'); fld.classList.add('show');
+      // auto-fill from wallet
+      if (wallet && wallet.tips) {
+        COINS.forEach(function(c) {
+          var key = 'm' + c.id.charAt(0).toUpperCase() + c.id.slice(1);
+          var el = document.getElementById(key);
+          if (el && !el.value && wallet.tips[c.id]) el.value = wallet.tips[c.id];
+        });
+      }
+    } else {
+      chk.classList.remove('on'); fld.classList.remove('show');
+    }
   });
 
   // tabs
@@ -1219,6 +1345,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 6000);
   });
 
+  // header logout
+  document.getElementById('headerLogoutBtn').addEventListener('click', logoutWallet);
+
   // verify button
   document.getElementById('verifyBtn').addEventListener('click', doVerify);
   document.getElementById('VI').addEventListener('keydown', function(e){ if(e.key==='Enter') doVerify(); });
@@ -1229,6 +1358,14 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('TIPMOV').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
   document.getElementById('tipModalCloseBtn').addEventListener('click', function(){ document.getElementById('TIPMOV').classList.remove('show'); });
   document.getElementById('npCloseBtn').addEventListener('click', function(){ document.getElementById('NP').classList.remove('show'); });
+
+  // wallet creation coin list
+  var wAddBtn = document.getElementById('wAddCoinBtn');
+  if (wAddBtn) wAddBtn.addEventListener('click', function(){ buildCoinRow('wCoinList', null, ''); });
+
+  // mint tip coin list
+  var mAddBtn = document.getElementById('mAddCoinBtn');
+  if (mAddBtn) mAddBtn.addEventListener('click', function(){ buildCoinRow('mCoinList', null, ''); });
 
   // INIT
   loadNodes();
