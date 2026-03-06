@@ -63,6 +63,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .coin-row-del:hover{color:var(--red);border-color:var(--red)}
 .add-coin-btn{background:transparent;border:1px dashed var(--gray3);color:#666;font-family:var(--mono);font-size:.57rem;text-transform:uppercase;letter-spacing:1px;padding:7px 12px;cursor:pointer;transition:all .2s;width:100%;margin-top:4px}
 .add-coin-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.header-logout-btn{display:none;background:transparent;border:1px solid #333;color:#555;font-size:.8rem;padding:6px 9px;cursor:pointer;transition:all .2s}
+.header-logout-btn:hover{border-color:var(--red);color:var(--red)}
 /* edit tips button in profile */
 .edit-tips-btn{background:transparent;border:1px solid var(--gray3);color:#888;font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:1px;padding:5px 10px;cursor:pointer;transition:all .2s;margin-left:8px}
 .edit-tips-btn:hover{border-color:var(--yellow);color:var(--yellow)}
@@ -346,7 +348,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
       <div class="wav" id="hAv"></div>
       <div><div class="wbn" id="hNm">—</div><div class="wba" id="hAd">sem carteira</div></div>
     </div>
-    <button id="headerLogoutBtn" title="Sair e apagar carteira desta máquina" style="display:none;background:transparent;border:1px solid #333;color:#555;font-size:.8rem;padding:6px 9px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">🚪</button>
+    <button id="headerLogoutBtn" title="Sair e apagar carteira desta máquina" class="header-logout-btn">🚪</button>
   </div>
 </header>
 
@@ -1096,7 +1098,7 @@ function renderProfile() {
     '<div class="slabel">Segurança</div>' +
     '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
       '<button class="wbtn" id="exportWalletBtn" style="max-width:260px;font-size:.7rem;letter-spacing:2px;padding:10px;margin-top:0">↓ BACKUP DAS CHAVES (.txt)</button>' +
-      '<button id="logoutBtn" style="display:flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--red);color:var(--red);font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:1px;padding:10px 16px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,45,45,.1)'" onmouseout="this.style.background='transparent'">🚪 SAIR E APAGAR CARTEIRA</button>' +
+      '<button id="logoutBtn" style="display:flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--red);color:var(--red);font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:1px;padding:10px 16px;cursor:pointer;transition:all .2s">🚪 SAIR E APAGAR CARTEIRA</button>' +
     '</div>';
   // bind events
   pc.querySelectorAll('.tip-addr-box').forEach(bindCopy);
