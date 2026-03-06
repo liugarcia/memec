@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MemeChain</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+:root{
+  --black:#080808;--white:#f0ede6;--yellow:#ffe600;--red:#ff2d2d;--green:#00ff88;
+  --gray:#151515;--gray2:#1e1e1e;--gray3:#333;
+  --btc:#f7931a;--eth:#627eea;--bnb:#f0b90b;--xmr:#ff6600;--wow:#ff69b4;
+  --mono:'Space Mono',monospace;--display:'Bebas Neue',sans-serif;--body:'Syne',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--black);color:var(--white);font-family:var(--body);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5}
+
+/* WALLET SCREEN */
+.wscr{position:fixed;inset:0;background:var(--black);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.wscr.hidden{display:none}
+.wbox{max-width:560px;width:100%;border:1px solid var(--yellow);background:var(--gray);animation:up .5s ease;margin:auto}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.wbh{padding:24px 28px 16px;border-bottom:1px solid var(--gray3)}
+.wlogo{font-family:var(--display);font-size:2.2rem;color:var(--yellow);letter-spacing:2px}
+.wlogo span{color:var(--white)}
+.wsub{font-family:var(--mono);font-size:.57rem;color:#555;text-transform:uppercase;letter-spacing:2px;margin-top:4px}
+.wbb{padding:22px 28px}
+.wtabs{display:flex;border-bottom:1px solid var(--gray3);margin-bottom:20px}
+.wtab{font-family:var(--mono);font-size:.57rem;text-transform:uppercase;letter-spacing:2px;padding:9px 15px;cursor:pointer;border:none;background:none;color:#555;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.wtab.active{color:var(--yellow);border-bottom-color:var(--yellow)}
+.wtab:hover{color:var(--white)}
+.wp{display:none}.wp.active{display:block}
+.wi{font-family:var(--mono);font-size:.58rem;color:#555;line-height:1.9;margin-bottom:14px;padding:10px;background:var(--black);border-left:2px solid var(--yellow)}
+.wf{margin-bottom:12px}
+.wf label{display:block;font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:5px}
+.wf input,.wf textarea{width:100%;background:var(--black);border:1px solid var(--gray3);color:var(--white);font-family:var(--mono);font-size:.74rem;padding:9px 12px;outline:none;transition:border-color .2s}
+.wf input:focus,.wf textarea:focus{border-color:var(--yellow)}
+.wf textarea{resize:none;height:60px}
+.wsect{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#444;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;gap:8px}
+.wbtn{width:100%;padding:13px;background:var(--yellow);color:var(--black);border:none;font-family:var(--display);font-size:1.25rem;letter-spacing:3px;cursor:pointer;transition:all .2s;margin-top:5px}
+.wbtn:hover{background:var(--white)}
+.wbtn.sec{background:transparent;border:1px solid var(--gray3);color:var(--white);font-size:.68rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;padding:10px}
+.wbtn.sec:hover{border-color:var(--white)}
+.werr{font-family:var(--mono);font-size:.57rem;color:var(--red);margin-top:5px;display:none}
+.werr.show{display:block}
+.node-toggle{display:flex;align-items:center;gap:9px;margin-bottom:12px;cursor:pointer;padding:8px;background:var(--black);border:1px solid var(--gray3);transition:border-color .2s}
+.node-toggle:hover{border-color:var(--yellow)}
+.nt-check{width:16px;height:16px;border:1px solid var(--gray3);display:flex;align-items:center;justify-content:center;font-size:.6rem;background:var(--gray2);flex-shrink:0;transition:all .2s}
+.nt-check.on{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
+.nt-label{font-family:var(--mono);font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:1px}
+.node-fields{display:none}.node-fields.show{display:block}
+
+/* COIN INPUT */
+.coin-input{display:flex;align-items:center;gap:0;margin-bottom:8px}
+.coin-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;font-weight:700;font-family:var(--mono)}
+.coin-input input{flex:1;background:var(--black);border:1px solid var(--gray3);color:var(--white);font-family:var(--mono);font-size:.65rem;padding:8px 10px;outline:none;transition:border-color .2s}
+.coin-input input:focus{border-color:var(--yellow)}
+.ci-btc .coin-icon{background:rgba(247,147,26,.15);color:var(--btc);border:1px solid rgba(247,147,26,.3)}
+.ci-eth .coin-icon{background:rgba(98,126,234,.15);color:var(--eth);border:1px solid rgba(98,126,234,.3)}
+.ci-bnb .coin-icon{background:rgba(240,185,11,.15);color:var(--bnb);border:1px solid rgba(240,185,11,.3)}
+.ci-xmr .coin-icon{background:rgba(255,102,0,.15);color:var(--xmr);border:1px solid rgba(255,102,0,.3)}
+.ci-wow .coin-icon{background:rgba(255,105,180,.15);color:var(--wow);border:1px solid rgba(255,105,180,.3)}
+
+/* HEADER */
+header{border-bottom:2px solid var(--yellow);padding:12px 34px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--black);z-index:100}
+.logo{font-family:var(--display);font-size:2rem;letter-spacing:2px;color:var(--yellow);line-height:1}
+.logo span{color:var(--white)}
+.hright{display:flex;align-items:center;gap:12px}
+.hstats{font-family:var(--mono);font-size:.55rem;color:#555;text-align:right;line-height:1.9}
+.hstats b{color:var(--yellow)}
+.wbadge{display:flex;align-items:center;gap:8px;background:var(--gray);border:1px solid var(--gray3);padding:6px 11px;cursor:pointer;transition:border-color .2s}
+.wbadge:hover{border-color:var(--yellow)}
+.wav{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:var(--mono);font-weight:700;flex-shrink:0}
+.wbn{font-family:var(--body);font-weight:700;font-size:.74rem;display:flex;align-items:center;gap:5px}
+.wba{font-family:var(--mono);font-size:.48rem;color:#666}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:.48rem;text-transform:uppercase;letter-spacing:1px;padding:2px 6px}
+.badge-founder{background:var(--yellow);color:var(--black);font-weight:700}
+.badge-node{background:var(--gray2);border:1px solid var(--green);color:var(--green)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--gray3);padding:0 34px;overflow-x:auto}
+.tab{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:2px;padding:13px 18px;cursor:pointer;border:none;background:none;color:#555;border-bottom:3px solid transparent;transition:all .2s;margin-bottom:-1px;white-space:nowrap}
+.tab:hover{color:var(--white)}.tab.active{color:var(--yellow);border-bottom-color:var(--yellow)}
+main{padding:30px 34px;max-width:1160px;margin:0 auto}
+.panel{display:none}.panel.active{display:block}
+.slabel{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:3px;color:#333;margin-bottom:22px;display:flex;align-items:center;gap:10px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--gray3)}
+
+/* MINT */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.uzone{border:2px dashed var(--gray3);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;background:var(--gray)}
+.uzone:hover{border-color:var(--yellow)}.uzone.has{border-style:solid;border-color:var(--yellow)}
+.uzone img.prev{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.uph{text-align:center;pointer-events:none}
+.uicon{font-size:2.6rem;margin-bottom:8px;display:block}
+.utxt{font-family:var(--mono);font-size:.58rem;color:#555;text-transform:uppercase;letter-spacing:1px;line-height:1.9}
+.uov{position:absolute;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.uzone.has:hover .uov{opacity:1}
+.uov span{font-family:var(--mono);font-size:.58rem;color:var(--yellow);text-transform:uppercase;letter-spacing:2px}
+#fi{display:none}
+.fsec{display:flex;flex-direction:column;gap:13px}
+.f label{display:block;font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:5px}
+.f input,.f textarea{width:100%;background:var(--gray);border:1px solid var(--gray3);color:var(--white);font-family:var(--mono);font-size:.74rem;padding:9px 12px;outline:none;transition:border-color .2s;resize:none}
+.f input:focus,.f textarea:focus{border-color:var(--yellow)}
+.f textarea{height:68px}
+.sigbox{background:var(--gray);border:1px solid var(--gray3);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.sigav{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:var(--mono);font-weight:700;flex-shrink:0}
+.sigi{flex:1}
+.sign{font-family:var(--body);font-weight:700;font-size:.78rem;display:flex;align-items:center;gap:5px}
+.siga{font-family:var(--mono);font-size:.48rem;color:#666;margin-top:2px}
+.sigbdg{font-family:var(--mono);font-size:.48rem;text-transform:uppercase;letter-spacing:1px;padding:2px 6px;border:1px solid var(--green);color:var(--green)}
+.szbar{background:var(--gray);border:1px solid var(--gray3);padding:9px 12px;font-family:var(--mono);font-size:.58rem;color:#555}
+.szfill{height:3px;background:var(--gray3);margin-top:5px}
+.szfi{height:100%;background:var(--yellow);transition:width .5s;width:0%}
+.mbtn{width:100%;padding:15px;background:var(--yellow);color:var(--black);border:none;font-family:var(--display);font-size:1.4rem;letter-spacing:3px;cursor:pointer;transition:all .2s}
+.mbtn:hover{background:var(--white);transform:translateY(-2px)}
+.mbtn:disabled{background:var(--gray3);color:#555;cursor:not-allowed;transform:none}
+.succ{background:var(--gray);border:1px solid var(--yellow);padding:14px;display:none;animation:up .4s ease}
+.succ.show{display:block}
+.succt{font-family:var(--display);font-size:1.1rem;color:var(--yellow);letter-spacing:2px;margin-bottom:7px}
+.hdisp{font-family:var(--mono);font-size:.55rem;color:#888;word-break:break-all;line-height:1.9;background:var(--black);padding:9px;margin-top:5px}
+.hdisp b{color:var(--yellow);display:block;margin-bottom:1px;margin-top:5px}
+.hdisp b:first-child{margin-top:0}
+
+/* TIP SECTION in mint */
+.tip-section{background:var(--gray);border:1px solid var(--gray3);padding:12px}
+.tip-section-title{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.tip-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:0}
+.tip-check{width:14px;height:14px;border:1px solid var(--gray3);display:flex;align-items:center;justify-content:center;font-size:.5rem;background:var(--black);flex-shrink:0;transition:all .2s}
+.tip-check.on{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
+.tip-label{font-family:var(--mono);font-size:.55rem;color:#888;text-transform:uppercase;letter-spacing:1px}
+.tip-fields{display:none;margin-top:10px}.tip-fields.show{display:block}
+
+/* CHAIN */
+.chdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.ctit{font-family:var(--display);font-size:1.8rem;letter-spacing:2px}
+.integ{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:1px;padding:4px 9px;border:1px solid var(--green);color:var(--green)}
+.integ.broken{border-color:var(--red);color:var(--red)}
+.bcnt{font-family:var(--mono);font-size:.58rem;color:#666;background:var(--gray);padding:5px 12px;border:1px solid var(--gray3)}
+.blist{display:flex;flex-direction:column;gap:2px}
+.blk{background:var(--gray);border-left:3px solid var(--gray3);display:grid;grid-template-columns:62px 1fr auto;transition:border-color .2s;cursor:pointer;overflow:hidden}
+.blk:hover{border-left-color:var(--yellow)}
+.blk.genesis{border-left-color:var(--red)}.blk.mine{border-left-color:var(--green)}
+.bidx{background:var(--black);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.4rem;color:#2a2a2a;border-right:1px solid var(--gray3);padding:12px}
+.blk.genesis .bidx{color:var(--red)}.blk.mine .bidx{color:var(--green)}
+.bbody{padding:10px 14px}
+.bmn{font-family:var(--body);font-weight:700;font-size:.86rem;margin-bottom:4px}
+.bmeta{font-family:var(--mono);font-size:.52rem;color:#555;line-height:1.9}
+.bmeta .addr{color:#888}.bmeta .vok{color:var(--green)}.bmeta .vno{color:var(--red)}
+.bprev{width:62px;height:62px;object-fit:cover;border-left:1px solid var(--gray3);display:block;align-self:stretch}
+.bpph{width:62px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:1.1rem;border-left:1px solid var(--gray3)}
+.bconn{width:3px;height:12px;background:var(--gray3);margin-left:31px}
+.tag{display:inline-block;background:var(--black);border:1px solid var(--gray3);font-family:var(--mono);font-size:.48rem;padding:1px 4px;margin:1px;color:#666}
+.node-pill{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.48rem;padding:1px 6px;cursor:pointer;transition:all .2s;border:1px solid transparent}
+.node-pill:hover{border-color:var(--yellow)!important}
+.node-pill.founder{background:rgba(255,230,0,.1);border-color:rgba(255,230,0,.25);color:var(--yellow)}
+.node-pill.regular{background:rgba(0,255,136,.07);border-color:rgba(0,255,136,.18);color:var(--green)}
+.tip-pill{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:.46rem;padding:1px 5px;background:rgba(255,230,0,.07);border:1px solid rgba(255,230,0,.2);color:#aa9900;cursor:pointer;transition:all .2s}
+.tip-pill:hover{border-color:var(--yellow);color:var(--yellow)}
+
+/* NODES */
+.nodes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:6px}
+.node-card{background:var(--gray);border:1px solid var(--gray3);padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.node-card:hover{border-color:var(--yellow);transform:translateY(-2px)}
+.node-card.founder-card{border-color:rgba(255,230,0,.35)}
+.node-card.founder-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--yellow)}
+.nc-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.nc-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:.82rem;flex-shrink:0}
+.nc-name{font-family:var(--body);font-weight:700;font-size:.92rem;margin-bottom:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.nc-addr{font-family:var(--mono);font-size:.48rem;color:#666}
+.nc-desc{font-family:var(--body);font-size:.72rem;color:#888;line-height:1.6;margin-bottom:12px}
+.nc-stats{display:flex;gap:14px;padding-top:10px;border-top:1px solid var(--gray3)}
+.nc-stat{font-family:var(--mono);font-size:.52rem;color:#555}
+.nc-stat b{color:var(--white);display:block;font-size:.76rem}
+.nc-coins{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.nc-coin{font-family:var(--mono);font-size:.48rem;padding:2px 6px;border-radius:0;font-weight:700}
+.nc-coin.btc{background:rgba(247,147,26,.15);color:var(--btc);border:1px solid rgba(247,147,26,.3)}
+.nc-coin.eth{background:rgba(98,126,234,.15);color:var(--eth);border:1px solid rgba(98,126,234,.3)}
+.nc-coin.bnb{background:rgba(240,185,11,.15);color:var(--bnb);border:1px solid rgba(240,185,11,.3)}
+.nc-coin.xmr{background:rgba(255,102,0,.15);color:var(--xmr);border:1px solid rgba(255,102,0,.3)}
+.nc-coin.wow{background:rgba(255,105,180,.15);color:var(--wow);border:1px solid rgba(255,105,180,.3)}
+
+/* NODE PROFILE */
+.nprofile{position:fixed;inset:0;background:var(--black);z-index:200;overflow-y:auto;display:none;animation:up .3s ease}
+.nprofile.show{display:block}
+.np-header{border-bottom:1px solid var(--gray3);padding:16px 38px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--black);z-index:10}
+.np-logo{font-family:var(--display);font-size:1.7rem;color:var(--yellow);letter-spacing:2px}
+.np-logo span{color:var(--white)}
+.np-close{background:none;border:1px solid var(--gray3);color:#666;font-family:var(--mono);font-size:.56rem;text-transform:uppercase;letter-spacing:2px;padding:7px 14px;cursor:pointer;transition:all .2s}
+.np-close:hover{color:var(--white);border-color:var(--white)}
+.np-body{max-width:920px;margin:0 auto;padding:36px}
+.np-hero{display:flex;align-items:flex-start;gap:24px;margin-bottom:32px;padding:24px;background:var(--gray);border:1px solid var(--gray3);position:relative;overflow:hidden}
+.np-hero.is-founder{border-color:rgba(255,230,0,.45)}
+.np-hero.is-founder::before{content:'NÓ FUNDADOR';position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:.5rem;letter-spacing:2px;padding:3px 8px;background:var(--yellow);color:var(--black);font-weight:700}
+.np-av{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:1.3rem;flex-shrink:0}
+.np-name{font-family:var(--display);font-size:2rem;letter-spacing:2px;margin-bottom:5px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.np-addr{font-family:var(--mono);font-size:.55rem;color:#666;word-break:break-all;margin-bottom:7px}
+.np-desc{font-family:var(--body);font-size:.8rem;color:#aaa;line-height:1.7;margin-bottom:12px}
+.np-badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.np-socials{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.np-social{font-family:var(--mono);font-size:.56rem;color:#888;text-decoration:none;border:1px solid var(--gray3);padding:4px 10px;transition:all .2s}
+.np-social:hover{color:var(--yellow);border-color:var(--yellow)}
+.np-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px}
+.np-stat{background:var(--gray);padding:14px 18px}
+.np-stat-val{font-family:var(--display);font-size:1.8rem;color:var(--yellow);letter-spacing:1px}
+.np-stat-label{font-family:var(--mono);font-size:.52rem;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.np-memes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
+.np-meme{background:var(--gray);border:1px solid var(--gray3);cursor:pointer;transition:border-color .2s;overflow:hidden}
+.np-meme:hover{border-color:var(--yellow)}
+.np-meme img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.np-meme-name{padding:6px 8px;font-family:var(--mono);font-size:.52rem;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* TIP MODAL */
+.tip-modal{background:var(--gray);border:1px solid var(--yellow);max-width:500px;width:100%;animation:up .3s ease}
+.tip-modal-header{padding:14px 18px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;justify-content:space-between}
+.tip-modal-title{font-family:var(--display);font-size:1.1rem;letter-spacing:2px;color:var(--yellow)}
+.tip-coins{padding:18px}
+.tip-coin-row{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--gray3)}
+.tip-coin-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.tip-coin-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.tip-coin-name{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.tip-addr-box{background:var(--black);padding:8px 10px;font-family:var(--mono);font-size:.56rem;color:#888;word-break:break-all;line-height:1.7;position:relative;cursor:pointer;border:1px solid var(--gray3);transition:border-color .2s}
+.tip-addr-box:hover{border-color:var(--yellow)}
+.tip-addr-box .copy-hint{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.5rem;color:#555;text-transform:uppercase;letter-spacing:1px}
+.copied{background:rgba(0,255,136,.08)!important;border-color:var(--green)!important;color:var(--green)!important}
+.tip-no-addr{font-family:var(--mono);font-size:.56rem;color:#444;padding:8px 0}
+
+/* VERIFY */
+.vsec{max-width:560px}
+.viw{display:flex;margin-bottom:18px}
+.viw input{flex:1;background:var(--gray);border:1px solid var(--gray3);border-right:none;color:var(--white);font-family:var(--mono);font-size:.68rem;padding:11px 12px;outline:none}
+.viw input:focus{border-color:var(--yellow)}
+.vbtn{background:var(--yellow);color:var(--black);border:none;font-family:var(--display);font-size:.9rem;letter-spacing:2px;padding:0 18px;cursor:pointer;transition:background .2s}
+.vbtn:hover{background:var(--white)}
+.vres{padding:18px;border:1px solid var(--gray3);background:var(--gray);display:none}
+.vres.show{display:block;animation:up .3s ease}
+.vres.valid{border-color:var(--green)}.vres.invalid{border-color:var(--red)}
+.vstat{font-family:var(--display);font-size:1.5rem;letter-spacing:2px;margin-bottom:11px}
+.vres.valid .vstat{color:var(--green)}.vres.invalid .vstat{color:var(--red)}
+.vmimg{max-width:220px;max-height:220px;margin:11px 0;display:block}
+
+/* PROFILE */
+.phdr{display:flex;align-items:center;gap:18px;margin-bottom:28px;padding:20px;background:var(--gray);border:1px solid var(--gray3)}
+.pavl{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:1rem;flex-shrink:0}
+.pname{font-family:var(--display);font-size:1.7rem;letter-spacing:2px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.paddr{font-family:var(--mono);font-size:.54rem;color:#666;word-break:break-all;margin-top:2px}
+.pstats{display:flex;gap:18px;margin-top:8px}
+.pstat{font-family:var(--mono);font-size:.58rem;color:#666}
+.pstat b{color:var(--yellow);font-size:.9rem;display:block}
+.pmemes{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.pmeme{background:var(--gray);border:1px solid var(--gray3);cursor:pointer;transition:border-color .2s;overflow:hidden}
+.pmeme:hover{border-color:var(--yellow)}
+.pmeme img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.pmemen{padding:5px 7px;font-family:var(--mono);font-size:.52rem;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:1000;display:none;align-items:center;justify-content:center;padding:40px}
+.mov.show{display:flex}
+.modal{background:var(--gray);border:1px solid var(--yellow);max-width:620px;width:100%;max-height:90vh;overflow-y:auto;animation:up .3s ease}
+.mhdr{padding:14px 18px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;justify-content:space-between}
+.mtit{font-family:var(--display);font-size:1.1rem;letter-spacing:2px;color:var(--yellow)}
+.mclose{background:none;border:none;color:#555;font-size:.88rem;cursor:pointer;font-family:var(--mono);padding:3px 5px;transition:color .2s}
+.mclose:hover{color:var(--white)}
+.mbody{padding:18px}
+.mimg{width:100%;max-height:260px;object-fit:contain;background:var(--black);margin-bottom:14px;display:block}
+.mf{margin-bottom:11px}
+.mfl{font-family:var(--mono);font-size:.52rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:3px}
+.mfv{font-family:var(--mono);font-size:.66rem;color:var(--white);word-break:break-all;line-height:1.6}
+.mfv.y{color:var(--yellow)}.mfv.g{color:var(--green)}.mfv.r{color:var(--red)}
+.sigv{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.54rem;padding:4px 8px;border:1px solid var(--green);color:var(--green);margin-top:5px}
+.sigx{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.54rem;padding:4px 8px;border:1px solid var(--red);color:var(--red);margin-top:5px}
+.tip-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.3);color:var(--yellow);font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:1px;padding:6px 12px;cursor:pointer;transition:all .2s;margin-top:6px}
+.tip-btn:hover{background:rgba(255,230,0,.2);border-color:var(--yellow)}
+
+.empty{text-align:center;padding:58px 40px;border:1px dashed var(--gray3)}
+.eico{font-size:2.8rem;margin-bottom:11px}
+.etxt{font-family:var(--mono);font-size:.58rem;color:#555;text-transform:uppercase;letter-spacing:2px;line-height:2}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s infinite}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--gray3)}
+</style>
+</head>
+<body>
+
+<!-- WALLET SCREEN -->
+<div class="wscr" id="WS">
+  <div class="wbox">
+    <div class="wbh"><div class="wlogo">Meme<span>Chain</span></div><div class="wsub">Blockchain de memes · identidade criptográfica</div></div>
+    <div class="wbb">
+      <div class="wtabs">
+        <button class="wtab active" onclick="wTab('create',this)">Criar Carteira</button>
+        <button class="wtab" onclick="wTab('import',this)">Importar</button>
+      </div>
+
+      <!-- CREATE -->
+      <div class="wp active" id="wp-create">
+        <div class="wi">Criptografia ECDSA P-256 gerada no browser. Sua chave privada <b>nunca sai do dispositivo.</b></div>
+        <div class="wf"><label>Nome / Apelido *</label><input type="text" id="cName" placeholder="ex: MemeKing2024" maxlength="40"></div>
+
+        <div class="wsect">💰 Endereços para gorjetas (opcional)</div>
+        <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="wBtc" placeholder="Endereço Bitcoin (BTC)"></div>
+        <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="wEth" placeholder="Endereço Ethereum (ETH)"></div>
+        <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="wBnb" placeholder="Endereço BNB / EVM"></div>
+        <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="wXmr" placeholder="Endereço Monero (XMR)"></div>
+        <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="wWow" placeholder="Endereço Wownero (WOW)"></div>
+
+        <div class="node-toggle" onclick="toggleNodeReg()" style="margin-top:14px">
+          <div class="nt-check" id="ntCheck">✓</div>
+          <div class="nt-label">Quero registrar um nó 🖥</div>
+        </div>
+        <div class="node-fields" id="nodeFields">
+          <div class="wi" style="border-color:var(--green);color:#00bb66;margin-top:10px">Os primeiros 10 nós ganham o badge <b>★ FUNDADOR</b> permanente na chain.</div>
+          <div class="wf"><label>Nome do Nó *</label><input type="text" id="nodeName" placeholder="ex: MemesDoNorte" maxlength="50"></div>
+          <div class="wf"><label>Descrição</label><textarea id="nodeDesc" placeholder="Quem você é? Por que roda esse nó?"></textarea></div>
+          <div class="wsect">🔗 Redes Sociais do Nó</div>
+          <div class="wf"><label>Twitter / X</label><input type="text" id="nodeTwitter" placeholder="@usuario"></div>
+          <div class="wf"><label>Instagram</label><input type="text" id="nodeInsta" placeholder="@usuario"></div>
+          <div class="wf"><label>Site</label><input type="text" id="nodeSite" placeholder="https://..."></div>
+        </div>
+        <div class="werr" id="cErr">Por favor insira um nome.</div>
+        <button class="wbtn" style="margin-top:14px" onclick="createWallet()">GERAR CARTEIRA</button>
+      </div>
+
+      <!-- IMPORT -->
+      <div class="wp" id="wp-import">
+        <div class="wi">Cole o JSON exportado da sua carteira.</div>
+        <div class="wf"><label>JSON da carteira *</label><input type="text" id="iKey" placeholder='Cole o JSON aqui...'></div>
+        <div class="werr" id="iErr">JSON inválido.</div>
+        <button class="wbtn" onclick="importWallet()">IMPORTAR</button>
+        <button class="wbtn sec" onclick="skipW()">Entrar sem carteira</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NODE PROFILE OVERLAY -->
+<div class="nprofile" id="NP">
+  <div class="np-header">
+    <div class="np-logo">Meme<span>Chain</span> <span style="font-size:.9rem;color:#555;letter-spacing:1px">/ NÓ</span></div>
+    <button class="np-close" onclick="closeNP()">✕ FECHAR</button>
+  </div>
+  <div class="np-body" id="NPB"></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Meme<span>Chain</span></div>
+  <div class="hright">
+    <div class="hstats">BLOCOS: <b id="hB">0</b> &nbsp;|&nbsp; NÓS: <b id="hN">0</b> &nbsp;|&nbsp; CHAIN: <b id="hI" style="color:var(--green)">—</b></div>
+    <div class="wbadge" onclick="showP('profile',null)">
+      <div class="wav" id="hAv"></div>
+      <div><div class="wbn" id="hNm">—</div><div class="wba" id="hAd">sem carteira</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" id="t0" onclick="showP('mint',this)">⛏ Mintar</button>
+  <button class="tab" id="t1" onclick="showP('chain',this)">🔗 Chain</button>
+  <button class="tab" id="t2" onclick="showP('nodes',this)">🖥 Nós</button>
+  <button class="tab" id="t3" onclick="showP('verify',this)">✓ Verificar</button>
+  <button class="tab" id="t4" onclick="showP('profile',this)">👤 Carteira</button>
+</div>
+
+<main>
+  <!-- MINT -->
+  <div class="panel active" id="panel-mint">
+    <div class="slabel">Registrar meme com assinatura criptográfica</div>
+    <div class="mgrid">
+      <div>
+        <div class="uzone" id="UZ" onclick="document.getElementById('fi').click()">
+          <div class="uph" id="UPH"><span class="uicon">🖼</span><div class="utxt">Clique para subir o meme<br><br>PNG · JPG · GIF · WEBP</div></div>
+          <img class="prev" id="PI" style="display:none"/>
+          <div class="uov"><span>Trocar imagem</span></div>
+        </div>
+        <input type="file" id="fi" accept="image/*" onchange="handleFile(event)">
+        <div class="szbar" style="margin-top:8px"><span id="szT" style="color:#555">Nenhuma imagem carregada</span><div class="szfill"><div class="szfi" id="szF"></div></div></div>
+      </div>
+      <div class="fsec">
+        <div class="f"><label>Nome do Meme *</label><input type="text" id="MN" placeholder="ex: Distracted Boyfriend BR" maxlength="80"></div>
+        <div class="f"><label>Descrição</label><textarea id="MD" placeholder="De onde veio? Qual a piada?"></textarea></div>
+        <div class="f"><label>Tags (vírgula)</label><input type="text" id="MT" placeholder="brasil, humor, 2024"></div>
+
+        <!-- TIP ADDRESSES FOR MEME -->
+        <div class="tip-section">
+          <div class="tip-toggle" onclick="toggleTip()">
+            <div class="tip-check" id="tipCheck">✓</div>
+            <div class="tip-label">💰 Aceitar gorjetas neste meme</div>
+          </div>
+          <div class="tip-fields" id="tipFields">
+            <div style="font-family:var(--mono);font-size:.52rem;color:#555;margin-bottom:8px;margin-top:6px">Endereços onde receberá gorjetas por este meme (herda da carteira se vazio)</div>
+            <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="mBtc" placeholder="Bitcoin (herda da carteira)"></div>
+            <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="mEth" placeholder="Ethereum (herda da carteira)"></div>
+            <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="mBnb" placeholder="BNB / EVM (herda da carteira)"></div>
+            <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="mXmr" placeholder="Monero (herda da carteira)"></div>
+            <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="mWow" placeholder="Wownero (herda da carteira)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-family:var(--mono);font-size:.54rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:5px">Assinante</div>
+          <div class="sigbox">
+            <div class="sigav" id="SAv"></div>
+            <div class="sigi"><div class="sign" id="SN">—</div><div class="siga" id="SA">crie uma carteira para assinar</div></div>
+            <div class="sigbdg" id="SB" style="display:none">✓ ASSINA</div>
+          </div>
+        </div>
+        <div class="succ" id="SUC"><div class="succt">✓ MEME MINTADO</div><div class="hdisp" id="SH"></div></div>
+        <button class="mbtn" id="MB" onclick="mintMeme()" disabled>ASSINAR E MINTAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAIN -->
+  <div class="panel" id="panel-chain">
+    <div class="chdr">
+      <div class="ctit">BLOCKCHAIN</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="integ" id="CI"><span class="dot"></span>ÍNTEGRA</div>
+        <div class="bcnt">BLOCOS: <span id="BC">0</span></div>
+      </div>
+    </div>
+    <div id="BL"></div>
+  </div>
+
+  <!-- NODES -->
+  <div class="panel" id="panel-nodes">
+    <div class="slabel">Nós ativos na MemeChain</div>
+    <div id="NL"></div>
+  </div>
+
+  <!-- VERIFY -->
+  <div class="panel" id="panel-verify">
+    <div class="slabel">Verificar hash e assinatura</div>
+    <div class="vsec">
+      <div class="viw"><input type="text" id="VI" placeholder="Cole o hash do bloco..."/><button class="vbtn" onclick="doVerify()">VERIFICAR</button></div>
+      <div class="vres" id="VR"><div class="vstat" id="VS"></div><img class="vmimg" id="VIM" style="display:none"/><div id="VD"></div></div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="panel" id="panel-profile"><div id="PC"></div></div>
+</main>
+
+<!-- MODAL (bloco) -->
+<div class="mov" id="MOV" onclick="closeM(event)">
+  <div class="modal" id="MODBOX">
+    <div class="mhdr"><div class="mtit" id="MT2">BLOCO</div><button class="mclose" onclick="closeMD()">✕</button></div>
+    <div class="mbody" id="MB2"></div>
+  </div>
+</div>
+
+<!-- MODAL (tip) -->
+<div class="mov" id="TIPMOV" onclick="closeTipM(event)">
+  <div class="tip-modal">
+    <div class="tip-modal-header"><div class="tip-modal-title" id="TIP_TITLE">💰 GORJETA</div><button class="mclose" onclick="document.getElementById('TIPMOV').classList.remove('show')">✕</button></div>
+    <div class="tip-coins" id="TIP_BODY"></div>
+  </div>
+</div>
+
+<script>
+// ══ STATE ══
+let wallet=null,chain=[],nodes=[];
+const MAX_FOUNDER=10;
+const COINS=[{id:'btc',sym:'BTC',icon:'₿',cls:'btc'},{id:'eth',sym:'ETH',icon:'Ξ',cls:'eth'},{id:'bnb',sym:'BNB',icon:'BNB',cls:'bnb'},{id:'xmr',sym:'XMR',icon:'ɱ',cls:'xmr'},{id:'wow',sym:'WOW',icon:'W',cls:'wow'}];
+
+// ══ CRYPTO ══
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+async function genKP(){return crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);}
+async function expKeys(kp){return{pub:await crypto.subtle.exportKey('jwk',kp.publicKey),priv:await crypto.subtle.exportKey('jwk',kp.privateKey)};}
+async function impPub(j){return crypto.subtle.importKey('jwk',j,{name:'ECDSA',namedCurve:'P-256'},true,['verify']);}
+async function impPriv(j){return crypto.subtle.importKey('jwk',j,{name:'ECDSA',namedCurve:'P-256'},true,['sign']);}
+async function signD(privJwk,data){const k=await impPriv(privJwk);const s=await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},k,new TextEncoder().encode(data));return Array.from(new Uint8Array(s)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+async function verifySig(pubJwk,data,sigHex){try{const k=await impPub(pubJwk);const sb=new Uint8Array(sigHex.match(/.{1,2}/g).map(b=>parseInt(b,16)));return crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},k,sb,new TextEncoder().encode(data));}catch{return false;}}
+function deriveAddr(pub){const raw=pub.x+pub.y;let h=0;for(let i=0;i<raw.length;i++){h=((h<<5)-h)+raw.charCodeAt(i);h|=0;}return'0x'+Math.abs(h).toString(16).padStart(8,'0')+raw.substring(0,8).replace(/[^a-zA-Z0-9]/g,'').toLowerCase().padEnd(8,'0');}
+function rndColor(s){const c=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff6bda','#ff9a3c','#00d4aa','#a78bfa'];let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return c[Math.abs(h)%c.length];}
+
+// ══ TIP HELPERS ══
+function getTipAddresses(overrides,fallback){
+  const tips={};
+  COINS.forEach(c=>{
+    const v=(overrides&&overrides[c.id])||fallback&&fallback[c.id]||'';
+    if(v)tips[c.id]=v;
+  });
+  return Object.keys(tips).length?tips:null;
+}
+function hasTips(obj){return obj&&COINS.some(c=>obj[c.id]);}
+function tipCoinsHtml(tips){
+  if(!hasTips(tips))return'';
+  return COINS.filter(c=>tips[c.id]).map(c=><span class="nc-coin ${c.cls}">${c.sym}</span>).join('');
+}
+function readCoinInputs(prefix){
+  const t={};COINS.forEach(c=>{const v=document.getElementById(prefix+c.id.charAt(0).toUpperCase()+c.id.slice(1))?.value.trim();if(v)t[c.id]=v;});
+  return Object.keys(t).length?t:null;
+}
+
+// ══ NODE ══
+function isFounder(addr){const i=nodes.findIndex(n=>n.address===addr);return i>=0&&i<MAX_FOUNDER;}
+function getNode(addr){return nodes.find(n=>n.address===addr)||null;}
+function registerNode(nd){if(nodes.find(n=>n.address===nd.address))return;nodes.push({...nd,isFounder:nodes.length<MAX_FOUNDER,registeredAt:Date.now(),blocksValidated:0});saveNodes();}
+function saveNodes(){localStorage.setItem('mc_nodes',JSON.stringify(nodes));}
+function loadNodes(){nodes=JSON.parse(localStorage.getItem('mc_nodes')||'[]');}
+
+// ══ WALLET ══
+let isNodeReg=false,isTipOpen=false;
+function toggleNodeReg(){isNodeReg=!isNodeReg;document.getElementById('ntCheck').classList.toggle('on',isNodeReg);document.getElementById('nodeFields').classList.toggle('show',isNodeReg);}
+function toggleTip(){isTipOpen=!isTipOpen;document.getElementById('tipCheck').classList.toggle('on',isTipOpen);document.getElementById('tipFields').classList.toggle('show',isTipOpen);if(isTipOpen)prefillTipFromWallet();}
+function prefillTipFromWallet(){if(!wallet)return;COINS.forEach(c=>{const el=document.getElementById('m'+c.id.charAt(0).toUpperCase()+c.id.slice(1));if(el&&!el.value&&wallet.tips&&wallet.tips[c.id])el.placeholder=wallet.tips[c.id];});}
+function wTab(t,el){document.querySelectorAll('.wtab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.wp').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('wp-'+t).classList.add('active');}
+
+async function createWallet(){
+  const n=document.getElementById('cName').value.trim();
+  if(!n){document.getElementById('cErr').classList.add('show');return;}
+  document.getElementById('cErr').classList.remove('show');
+  const kp=await genKP();const{pub,priv}=await expKeys(kp);
+  const addr=deriveAddr(pub);const color=rndColor(addr);
+  const tips=readCoinInputs('w');
+  wallet={name:n,address:addr,publicKeyJwk:pub,privateKeyJwk:priv,color,isNode:isNodeReg,tips};
+  if(isNodeReg){
+    const nn=document.getElementById('nodeName').value.trim()||n;
+    wallet.nodeData={name:nn,description:document.getElementById('nodeDesc').value.trim(),twitter:document.getElementById('nodeTwitter').value.trim(),instagram:document.getElementById('nodeInsta').value.trim(),site:document.getElementById('nodeSite').value.trim(),address:addr,color,ownerName:n,tips};
+    registerNode(wallet.nodeData);
+  }
+  localStorage.setItem('mc_w',JSON.stringify(wallet));
+  closeWS();
+}
+
+async function importWallet(){
+  try{const d=JSON.parse(document.getElementById('iKey').value.trim());if(!d.name||!d.privateKeyJwk||!d.publicKeyJwk)throw 0;wallet=d;localStorage.setItem('mc_w',JSON.stringify(wallet));if(wallet.nodeData&&!getNode(wallet.address))registerNode(wallet.nodeData);closeWS();}
+  catch{document.getElementById('iErr').classList.add('show');}
+}
+function skipW(){closeWS();}
+function closeWS(){document.getElementById('WS').classList.add('hidden');updateWUI();loadChain();}
+
+function nodeBadgesHtml(addr){
+  const nd=getNode(addr);if(!nd)return'';
+  return(nd.isFounder?<span class="badge badge-founder">★ FUNDADOR</span>:'')+<span class="badge badge-node">🖥 NÓ</span>;
+}
+
+function updateWUI(){
+  const av=document.getElementById('hAv'),nm=document.getElementById('hNm'),ad=document.getElementById('hAd');
+  const sav=document.getElementById('SAv'),sn=document.getElementById('SN'),sa=document.getElementById('SA'),sb=document.getElementById('SB');
+  if(!wallet){av.textContent='?';av.style.background='#333';nm.innerHTML='Visitante';ad.textContent='sem carteira';sav.textContent='?';sav.style.background='#333';sn.innerHTML='—';sa.textContent='crie uma carteira';sb.style.display='none';return;}
+  const ini=wallet.name.substring(0,2).toUpperCase(),c=wallet.color;
+  [av,sav].forEach(x=>{x.textContent=ini;x.style.background=c;x.style.color='#000';});
+  const bdg=nodeBadgesHtml(wallet.address);
+  nm.innerHTML=wallet.name+(bdg?'&nbsp;'+bdg:'');ad.textContent=wallet.address;
+  sn.innerHTML=wallet.name+(bdg?'&nbsp;'+bdg:'');sa.textContent=wallet.address;sb.style.display='flex';
+  checkMR();updH();
+}
+
+// ══ CHAIN ══
+function loadChain(){chain=JSON.parse(localStorage.getItem('mc_c')||'[]');updH();}
+function saveChain(){localStorage.setItem('mc_c',JSON.stringify(chain));}
+async function createBlock(name,desc,tags,imgHex,memeTips){
+  const prev=chain.length>0?chain[chain.length-1].hash:'0'.repeat(64);
+  const bd={index:chain.length,timestamp:Date.now(),name,desc,tags,imageHex:imgHex,
+    creator:wallet?.name||'anônimo',address:wallet?.address||null,
+    publicKeyJwk:wallet?.publicKeyJwk||null,
+    tips:memeTips||wallet?.tips||null,
+    nodeAddress:wallet?.isNode?wallet.address:null,
+    isNodeBlock:!!(wallet?.isNode),prevHash:prev};
+  const sig=wallet?.privateKeyJwk?await signD(wallet.privateKeyJwk,JSON.stringify(bd)):null;
+  const ws={...bd,signature:sig};
+  if(wallet?.isNode){const nd=getNode(wallet.address);if(nd){nd.blocksValidated++;saveNodes();}}
+  return{...ws,hash:await sha256(JSON.stringify(ws))};
+}
+async function verifyBlock(blk){
+  const{hash,...d}=blk;const ok=await sha256(JSON.stringify(d))===hash;
+  if(!ok)return{hashOk:false,sigOk:false};
+  let sigOk=false;
+  if(blk.signature&&blk.publicKeyJwk){const{hash:,signature:_,...nd}=blk;sigOk=await verifySig(blk.publicKeyJwk,JSON.stringify(nd),blk.signature);}
+  return{hashOk:true,sigOk};
+}
+async function verifyChain(){for(let i=0;i<chain.length;i++){const{hashOk}=await verifyBlock(chain[i]);if(!hashOk)return false;if(i>0&&chain[i].prevHash!==chain[i-1].hash)return false;}return true;}
+
+// ══ IMAGE ══
+let imgData=null;
+function compressImg(file){return new Promise(res=>{const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas');const M=540;let w=i.width,h=i.height;if(w>h){if(w>M){h=h*M/w;w=M;}}else{if(h>M){w=w*M/h;h=M;}}c.width=Math.round(w);c.height=Math.round(h);c.getContext('2d').drawImage(i,0,0,c.width,c.height);res(c.toDataURL('image/webp',.76));};i.src=e.target.result;};r.readAsDataURL(file);});}
+function b64hex(b){const r=atob(b.split(',')[1]||b);let h='';for(let i=0;i<r.length;i++)h+=r.charCodeAt(i).toString(16).padStart(2,'0');return h;}
+function hex64(h){let s='';for(let i=0;i<h.length;i+=2)s+=String.fromCharCode(parseInt(h.substr(i,2),16));return'data:image/webp;base64,'+btoa(s);}
+async function handleFile(e){
+  const f=e.target.files[0];if(!f)return;
+  document.getElementById('UPH').style.display='none';
+  const pi=document.getElementById('PI');pi.src=URL.createObjectURL(f);pi.style.display='block';
+  document.getElementById('UZ').classList.add('has');
+  const c=await compressImg(f);imgData=c;
+  const kb=Math.round(b64hex(c).length/2/1024);const pct=Math.min(100,(kb/400)*100);
+  document.getElementById('szT').innerHTML=<b style="color:var(--yellow)">${kb} KB</b> · WebP;
+  document.getElementById('szF').style.width=pct+'%';document.getElementById('szF').style.background=kb>300?'var(--red)':'var(--yellow)';
+  checkMR();
+}
+function checkMR(){document.getElementById('MB').disabled=!(document.getElementById('MN').value.trim()&&imgData&&wallet);}
+document.getElementById('MN').addEventListener('input',checkMR);
+async function mintMeme(){
+  if(!wallet||!imgData)return;const name=document.getElementById('MN').value.trim();if(!name)return;
+  const btn=document.getElementById('MB');btn.disabled=true;btn.textContent='ASSINANDO...';
+  const memeTips=isTipOpen?readCoinInputs('m'):null;
+  const effectiveTips=getTipAddresses(memeTips,wallet.tips);
+  const blk=await createBlock(name,document.getElementById('MD').value.trim(),document.getElementById('MT').value.trim().split(',').map(t=>t.trim()).filter(Boolean),b64hex(imgData),effectiveTips);
+  chain.push(blk);saveChain();
+  document.getElementById('SH').innerHTML=<b>HASH</b>${blk.hash}<b>BLOCO Nº</b>${blk.index}<b>CRIADOR</b>${blk.creator}<b>GORJETAS</b>${blk.tips?COINS.filter(c=>blk.tips[c.id]).map(c=>c.sym).join(', '):'nenhuma'}<b>TIMESTAMP</b>${new Date(blk.timestamp).toLocaleString('pt-BR')};
+  document.getElementById('SUC').classList.add('show');btn.textContent='ASSINAR E MINTAR';updH();
+  setTimeout(()=>{document.getElementById('MN').value='';document.getElementById('MD').value='';document.getElementById('MT').value='';imgData=null;document.getElementById('UZ').classList.remove('has');document.getElementById('UPH').style.display='flex';document.getElementById('PI').style.display='none';document.getElementById('szF').style.width='0%';document.getElementById('szT').style.color='#555';document.getElementById('szT').textContent='Nenhuma imagem carregada';document.getElementById('SUC').classList.remove('show');checkMR();},6000);
+}
+
+// ══ UI ══
+function showP(n,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+n).classList.add('active');
+  if(el)el.classList.add('active');
+  if(n==='chain')renderChain();
+  if(n==='nodes')renderNodes();
+  if(n==='profile')renderProfile();
+}
+
+async function renderChain(){
+  const bl=document.getElementById('BL');document.getElementById('BC').textContent=chain.length;
+  if(!chain.length){bl.innerHTML=<div class="empty"><div class="eico">⛓</div><div class="etxt">Chain vazia<br>Minte o primeiro meme</div></div>;return;}
+  const v=await verifyChain();const ci=document.getElementById('CI');
+  ci.innerHTML=v?<span class="dot"></span>ÍNTEGRA:⚠ CORROMPIDA;ci.className='integ'+(v?'':' broken');
+  const rev=[...chain].reverse();
+  const rows=await Promise.all(rev.map(async(blk,ri)=>{
+    const{sigOk}=await verifyBlock(blk);
+    const mine=wallet&&blk.address===wallet.address;
+    const tags=blk.tags?.length?blk.tags.map(t=><span class="tag">${t}</span>).join(''):'';
+    const prev=blk.imageHex?<img class="bprev" src="${hex64(blk.imageHex)}"/>:<div class="bpph">🖼</div>;
+    const sigB=blk.signature?<span class="${sigOk?'vok':'vno'}">${sigOk?'✓ assinado':'⚠ sig'}</span>:<span style="color:#333">sem assinatura</span>;
+    let nodePill='';
+    if(blk.isNodeBlock&&blk.nodeAddress){const nd=getNode(blk.nodeAddress);if(nd)nodePill=<span class="node-pill ${nd.isFounder?'founder':'regular'}" onclick="event.stopPropagation();openNP('${blk.nodeAddress}')">${nd.isFounder?'★':''} ${nd.name}</span>;}
+    const tipPill=hasTips(blk.tips)?<span class="tip-pill" onclick="event.stopPropagation();openTipModal('${blk.hash}','creator')">💰 gorjeta</span>:'';
+    const conn=ri<rev.length-1?<div class="bconn"></div>:'';
+    return`<div class="blk ${blk.index===0?'genesis':''} ${mine?'mine':''}" onclick="openBlk(${blk.index})"><div class="bidx">#${blk.index}</div><div class="bbody"><div class="bmn">${blk.name}</div><div class="bmeta"><span class="addr">${blk.creator}</span><br>${sigB} ${nodePill} ${tipPill}<br><span style="color:#333">${new Date(blk.timestamp).toLocaleString('pt-BR')}</span><br>${tags}</div></div>${prev}</div>${conn}`;
+  }));
+  bl.innerHTML=rows.join('');
+}
+
+function renderNodes(){
+  const nl=document.getElementById('NL');
+  if(!nodes.length){nl.innerHTML=<div class="empty"><div class="eico">🖥</div><div class="etxt">Nenhum nó registrado<br>Crie uma carteira e registre o primeiro nó</div></div>;return;}
+  const fn=nodes.filter(n=>n.isFounder),rn=nodes.filter(n=>!n.isFounder);
+  let html='';
+  if(fn.length){html+=<div class="slabel" style="margin-bottom:14px">★ Nós Fundadores (${fn.length}/${MAX_FOUNDER})</div><div class="nodes-grid" style="margin-bottom:28px">${fn.map(nodeCardHtml).join('')}</div>;}
+  if(rn.length){html+=<div class="slabel" style="margin-bottom:14px">Validadores</div><div class="nodes-grid">${rn.map(nodeCardHtml).join('')}</div>;}
+  nl.innerHTML=html;
+}
+
+function nodeCardHtml(nd){
+  const ini=nd.name.substring(0,2).toUpperCase();
+  const mc=chain.filter(b=>b.nodeAddress===nd.address).length;
+  const coins=tipCoinsHtml(nd.tips);
+  return`<div class="node-card ${nd.isFounder?'founder-card':''}" onclick="openNP('${nd.address}')">
+    <div class="nc-top"><div class="nc-av" style="background:${nd.color||'#333'};color:#000">${ini}</div>
+    <div><div class="nc-name">${nd.name}${nd.isFounder?'<span class="badge badge-founder">★ FUNDADOR</span>':''}</div><div class="nc-addr">${nd.address}</div></div></div>
+    ${nd.description?<div class="nc-desc">${nd.description}</div>:''}
+    <div class="nc-stats"><div class="nc-stat"><b>${mc}</b>memes</div><div class="nc-stat"><b>${nd.isFounder?'#'+(nodes.indexOf(nd)+1):'—'}</b>${nd.isFounder?'fundador':'validador'}</div></div>
+    ${coins?<div class="nc-coins">${coins}</div>:''}
+  </div>`;
+}
+
+function openNP(addr){
+  const nd=getNode(addr);if(!nd)return;
+  const ini=nd.name.substring(0,2).toUpperCase();
+  const myMemes=chain.filter(b=>b.nodeAddress===addr);
+  const fi=nodes.filter(n=>n.isFounder).findIndex(n=>n.address===addr);
+  const socials=[nd.twitter?<a class="np-social" href="https://twitter.com/${nd.twitter.replace('@','')}" target="_blank">𝕏 ${nd.twitter}</a>:'',nd.instagram?<a class="np-social" href="https://instagram.com/${nd.instagram.replace('@','')}" target="_blank">📸 ${nd.instagram}</a>:'',nd.site?<a class="np-social" href="${nd.site}" target="_blank">🌐 ${nd.site}</a>:''].filter(Boolean).join('');
+  const bdg=[nd.isFounder?<span class="badge badge-founder" style="font-size:.62rem;padding:3px 8px">★ FUNDADOR #${fi+1}</span>:'',<span class="badge badge-node" style="font-size:.62rem;padding:3px 8px">🖥 VALIDADOR</span>].filter(Boolean).join('');
+  const coins=hasTips(nd.tips)?buildCoinSection(nd.tips,nd.name,'nó'):'';
+  const mg=myMemes.length?myMemes.map(b=><div class="np-meme" onclick="openBlk(${b.index})"><img src="${hex64(b.imageHex)}"/><div class="np-meme-name">${b.name}</div></div>).join(''):<div class="empty" style="margin-top:0"><div class="eico">🖼</div><div class="etxt">Nenhum meme validado</div></div>;
+  document.getElementById('NPB').innerHTML=`
+    <div class="np-hero ${nd.isFounder?'is-founder':''}">
+      <div class="np-av" style="background:${nd.color||'#333'};color:#000">${ini}</div>
+      <div style="flex:1">
+        <div class="np-name">${nd.name}</div>
+        <div class="np-addr">${nd.address}</div>
+        ${nd.description?<div class="np-desc">${nd.description}</div>:''}
+        <div class="np-badges">${bdg}</div>
+        ${socials?<div class="np-socials">${socials}</div>:''}
+      </div>
+    </div>
+    <div class="np-stats">
+      <div class="np-stat"><div class="np-stat-val">${myMemes.length}</div><div class="np-stat-label">Memes Validados</div></div>
+      <div class="np-stat"><div class="np-stat-val">${nd.isFounder?'#'+(fi+1):'—'}</div><div class="np-stat-label">${nd.isFounder?'Fundador':'Validador'}</div></div>
+      <div class="np-stat"><div class="np-stat-val">${nodes.length}</div><div class="np-stat-label">Total Nós</div></div>
+      <div class="np-stat"><div class="np-stat-val">${new Date(nd.registeredAt).toLocaleDateString('pt-BR')}</div><div class="np-stat-label">Membro desde</div></div>
+    </div>
+    ${coins?<div style="margin-bottom:28px"><div class="slabel" style="margin-bottom:14px">💰 Gorjetas para este nó</div>${coins}</div>:''}
+    <div class="slabel">Memes Validados</div>
+    <div class="np-memes-grid">${mg}</div>`;
+  document.getElementById('NP').classList.add('show');
+}
+
+function buildCoinSection(tips,name,type){
+  if(!hasTips(tips))return'';
+  return`<div style="background:var(--gray);border:1px solid var(--gray3);padding:16px">`+
+    COINS.filter(c=>tips[c.id]).map(c=>`
+      <div class="tip-coin-row">
+        <div class="tip-coin-header"><span class="coin-icon" style="width:28px;height:28px;font-weight:700;font-family:var(--mono);display:flex;align-items:center;justify-content:center;background:var(--black);border:1px solid var(--gray3);font-size:.65rem;color:var(--${c.cls})">${c.icon}</span><span class="tip-coin-name" style="color:var(--${c.cls})">${c.sym}</span></div>
+        <div class="tip-addr-box" onclick="copyAddr(this,'${tips[c.id]}')">${tips[c.id]}<span class="copy-hint">copiar</span></div>
+      </div>).join('')+</div>`;
+}
+
+function openTipModal(blkHash,type){
+  const blk=chain.find(b=>b.hash===blkHash);
+  if(!blk||!hasTips(blk.tips))return;
+  document.getElementById('TIP_TITLE').textContent=💰 GORJETA — ${blk.name};
+  document.getElementById('TIP_BODY').innerHTML=buildCoinSection(blk.tips,blk.creator,'meme');
+  document.getElementById('TIPMOV').classList.add('show');
+}
+
+function copyAddr(el,addr){
+  navigator.clipboard.writeText(addr).then(()=>{el.classList.add('copied');el.querySelector('.copy-hint').textContent='copiado!';setTimeout(()=>{el.classList.remove('copied');el.querySelector('.copy-hint').textContent='copiar';},2000);});
+}
+
+async function openBlk(i){
+  const blk=chain[i];if(!blk)return;
+  const{hashOk,sigOk}=await verifyBlock(blk);
+  const tags=blk.tags?.length?blk.tags.map(t=><span class="tag">${t}</span>).join(''):'—';
+  const img=blk.imageHex?<img class="mimg" src="${hex64(blk.imageHex)}"/>:'';
+  const sigH=blk.signature?<div class="${sigOk?'sigv':'sigx'}">${sigOk?'✓ ASSINATURA VÁLIDA':'⚠ INVÁLIDA'}</div>:<div style="font-family:var(--mono);font-size:.58rem;color:#555;margin-top:5px">Sem assinatura</div>;
+  const nd=blk.nodeAddress?getNode(blk.nodeAddress):null;
+  const nodeSec=nd?<div class="mf"><div class="mfl">Nó Validador</div><div style="display:flex;align-items:center;gap:7px;margin-top:3px"><div style="width:20px;height:20px;border-radius:50%;background:${nd.color||'#333'};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.5rem;font-weight:700;color:#000">${nd.name.substring(0,2).toUpperCase()}</div><span class="mfv">${nd.name} ${nd.isFounder?'<span class="badge badge-founder">★</span>':''}</span></div><button onclick="closeMD();openNP('${nd.address}')" style="margin-top:7px;background:var(--gray2);border:none;color:var(--white);font-family:var(--mono);font-size:.54rem;text-transform:uppercase;letter-spacing:1px;padding:5px 10px;cursor:pointer">Ver perfil do nó →</button></div>:<div class="mf"><div class="mfl">Nó Validador</div><div class="mfv" style="color:#333">—</div></div>;
+  const tipSec=hasTips(blk.tips)?<div class="mf"><div class="mfl">Gorjetas</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:3px">${tipCoinsHtml(blk.tips)}</div><button class="tip-btn" onclick="openTipModal('${blk.hash}','creator')">💰 Ver endereços de gorjeta</button></div>:<div class="mf"><div class="mfl">Gorjetas</div><div class="mfv" style="color:#333">—</div></div>;
+  document.getElementById('MT2').textContent=BLOCO #${blk.index};
+  document.getElementById('MB2').innerHTML=`${img}
+    <div class="mf"><div class="mfl">Meme</div><div class="mfv" style="font-size:.9rem;font-weight:700">${blk.name}</div></div>
+    ${blk.desc?<div class="mf"><div class="mfl">Descrição</div><div class="mfv">${blk.desc}</div></div>:''}
+    <div class="mf"><div class="mfl">Tags</div><div class="mfv">${tags}</div></div>
+    <div class="mf"><div class="mfl">Criador</div><div class="mfv">${blk.creator}</div></div>
+    <div class="mf"><div class="mfl">Endereço</div><div class="mfv y">${blk.address||'—'}</div></div>
+    ${nodeSec}${tipSec}
+    <div class="mf"><div class="mfl">Assinatura</div><div class="mfv" style="color:#444;font-size:.52rem">${blk.signature?blk.signature.substring(0,80)+'...':'—'}</div>${sigH}</div>
+    <div class="mf"><div class="mfl">Hash SHA-256</div><div class="mfv y">${blk.hash}</div></div>
+    <div class="mf"><div class="mfl">Integridade</div><div class="mfv ${hashOk?'g':'r'}">${hashOk?'✓ ÍNTEGRO':'⚠ CORROMPIDO'}</div></div>
+    <div class="mf"><div class="mfl">Data</div><div class="mfv">${new Date(blk.timestamp).toLocaleString('pt-BR')}</div></div>`;
+  document.getElementById('MOV').classList.add('show');
+}
+
+function renderProfile(){
+  const pc=document.getElementById('PC');
+  if(!wallet){pc.innerHTML=<div class="empty"><div class="eico">🔐</div><div class="etxt">Sem carteira ativa</div></div>;return;}
+  const my=chain.filter(b=>b.address===wallet.address);
+  const ini=wallet.name.substring(0,2).toUpperCase(),c=wallet.color;
+  const bdg=nodeBadgesHtml(wallet.address);
+  const nd=getNode(wallet.address);
+  const coins=hasTips(wallet.tips)?buildCoinSection(wallet.tips,wallet.name,'perfil'):'';
+  const mg=my.length?my.map(b=><div class="pmeme" onclick="openBlk(${b.index})"><img src="${hex64(b.imageHex)}"/><div class="pmemen">${b.name}</div></div>).join(''):<div class="empty" style="margin-top:0"><div class="eico">🖼</div><div class="etxt">Nenhum meme mintado</div></div>;
+  const ed=encodeURIComponent(JSON.stringify(wallet));
+  pc.innerHTML=`
+    <div class="phdr">
+      <div class="pavl" style="background:${c};color:#000">${ini}</div>
+      <div style="flex:1">
+        <div class="pname">${wallet.name}${bdg?'&nbsp;'+bdg:''}</div>
+        <div class="paddr">${wallet.address}</div>
+        <div class="pstats"><div class="pstat"><b>${my.length}</b>memes</div><div class="pstat"><b>${chain.length}</b>blocos</div>${nd?<div class="pstat"><b>${nd.blocksValidated||0}</b>validados</div>:''}</div>
+      </div>
+      ${nd?<button onclick="openNP('${wallet.address}')" style="background:var(--gray2);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:.56rem;text-transform:uppercase;letter-spacing:1px;padding:8px 13px;cursor:pointer">Perfil do nó →</button>:''}
+    </div>
+    ${coins?<div class="slabel">💰 Meus endereços de gorjeta</div><div style="margin-bottom:28px">${coins}</div>:''}
+    <div class="slabel">Meus Memes</div>
+    <div class="pmemes" style="margin-bottom:28px">${mg}</div>
+    <div class="slabel">Exportar Carteira</div>
+    <div style="background:var(--gray);border:1px solid var(--gray3);padding:14px;margin-bottom:9px"><div style="font-family:var(--mono);font-size:.56rem;color:#555;line-height:1.9">Guarde em local seguro. <span style="color:var(--red)">Nunca compartilhe a chave privada.</span></div></div>
+    <button onclick="expW('${ed}')" style="background:var(--gray);border:1px solid var(--yellow);color:var(--yellow);font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:2px;padding:9px 14px;cursor:pointer" onmouseover="this.style.background='var(--yellow)';this.style.color='#000'" onmouseout="this.style.background='var(--gray)';this.style.color='var(--yellow)'">↓ BAIXAR CHAVE PRIVADA</button>`;
+}
+
+function expW(ed){const blob=new Blob([decodeURIComponent(ed)],{type:'application/json'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=mc-wallet-${wallet.name}.json;a.click();URL.revokeObjectURL(u);}
+
+async function doVerify(){
+  const inp=document.getElementById('VI').value.trim();
+  const vr=document.getElementById('VR'),vs=document.getElementById('VS'),vi=document.getElementById('VIM'),vd=document.getElementById('VD');
+  if(!inp)return;
+  const blk=chain.find(b=>b.hash===inp||b.hash.startsWith(inp));
+  if(!blk){vr.className='vres show invalid';vs.textContent='✕ NÃO ENCONTRADO';vi.style.display='none';vd.innerHTML=<p style="font-family:var(--mono);font-size:.66rem;color:#666">Nenhum bloco com esse hash.</p>;return;}
+  const{hashOk,sigOk}=await verifyBlock(blk);
+  vr.className='vres show '+(hashOk?'valid':'invalid');vs.textContent=hashOk?'✓ AUTÊNTICO':'⚠ CORROMPIDO';
+  if(blk.imageHex){vi.src=hex64(blk.imageHex);vi.style.display='block';}else vi.style.display='none';
+  const nd=blk.nodeAddress?getNode(blk.nodeAddress):null;
+  vd.innerHTML=<div class="hdisp"><b>MEME</b>${blk.name}<b>CRIADOR</b>${blk.creator}<b>NÓ</b>${nd?nd.name+(nd.isFounder?' ★':''):' —'}<b>GORJETAS</b>${hasTips(blk.tips)?COINS.filter(c=>blk.tips[c.id]).map(c=>c.sym).join(', '):'—'}<b>ASSINATURA</b><span style="color:${sigOk?'var(--green)':blk.signature?'var(--red)':'#555'}">${blk.signature?(sigOk?'✓ VÁLIDA':'⚠ INVÁLIDA'):'—'}</span><b>INTEGRIDADE</b><span style="color:${hashOk?'var(--green)':'var(--red)'}">${hashOk?'✓ ÍNTEGRO':'⚠ CORROMPIDO'}</span><b>DATA</b>${new Date(blk.timestamp).toLocaleString('pt-BR')}</div>;
+}
+
+async function updH(){
+  document.getElementById('hB').textContent=chain.length;
+  document.getElementById('hN').textContent=nodes.length;
+  if(chain.length>0){const v=await verifyChain();document.getElementById('hI').textContent=v?'✓ OK':'⚠ ERRO';document.getElementById('hI').style.color=v?'var(--green)':'var(--red)';}
+}
+function closeNP(){document.getElementById('NP').classList.remove('show');}
+function closeM(e){if(e.target===document.getElementById('MOV'))closeMD();}
+function closeMD(){document.getElementById('MOV').classList.remove('show');}
+function closeTipM(e){if(e.target===document.getElementById('TIPMOV'))document.getElementById('TIPMOV').classList.remove('show');}
+
+// INIT
+loadNodes();
+const sw=localStorage.getItem('mc_w');
+if(sw){try{wallet=JSON.parse(sw);if(wallet.nodeData&&!getNode(wallet.address))registerNode(wallet.nodeData);document.getElementById('WS').classList.add('hidden');updateWUI();loadChain();}catch{localStorage.removeItem('mc_w');}}
+</script>
+</body>
+</html>
