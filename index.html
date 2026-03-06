@@ -37,23 +37,24 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .wf input,.wf textarea{width:100%;background:var(--black);border:1px solid var(--gray3);color:var(--white);font-family:var(--mono);font-size:.74rem;padding:9px 12px;outline:none;transition:border-color .2s}
 .wf input:focus,.wf textarea:focus{border-color:var(--yellow)}
 .wf textarea{resize:none;height:60px}
-.wsect{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#444;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;gap:8px}
-.wbtn{width:100%;padding:13px;background:var(--yellow);color:var(--black);border:none;font-family:var(--display);font-size:1.25rem;letter-spacing:3px;cursor:pointer;transition:all .2s;margin-top:5px}
+.wsect{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#444;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--gray3)}
+.wbtn{width:100%;padding:13px;background:var(--yellow);color:var(--black);border:none;font-family:var(--display);font-size:1.25rem;letter-spacing:3px;cursor:pointer;transition:all .2s;margin-top:5px;display:block}
 .wbtn:hover{background:var(--white)}
+.wbtn:disabled{background:var(--gray3);color:#555;cursor:not-allowed}
 .wbtn.sec{background:transparent;border:1px solid var(--gray3);color:var(--white);font-size:.68rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;padding:10px}
-.wbtn.sec:hover{border-color:var(--white)}
+.wbtn.sec:hover{border-color:var(--white);background:transparent}
 .werr{font-family:var(--mono);font-size:.57rem;color:var(--red);margin-top:5px;display:none}
 .werr.show{display:block}
-.node-toggle{display:flex;align-items:center;gap:9px;margin-bottom:12px;cursor:pointer;padding:8px;background:var(--black);border:1px solid var(--gray3);transition:border-color .2s}
+.node-toggle{display:flex;align-items:center;gap:9px;margin-top:14px;margin-bottom:0;cursor:pointer;padding:10px;background:var(--black);border:1px solid var(--gray3);transition:border-color .2s;width:100%;text-align:left}
 .node-toggle:hover{border-color:var(--yellow)}
-.nt-check{width:16px;height:16px;border:1px solid var(--gray3);display:flex;align-items:center;justify-content:center;font-size:.6rem;background:var(--gray2);flex-shrink:0;transition:all .2s}
+.nt-check{width:16px;height:16px;border:1px solid var(--gray3);display:flex;align-items:center;justify-content:center;font-size:.58rem;background:var(--gray2);flex-shrink:0;transition:all .2s;pointer-events:none}
 .nt-check.on{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
-.nt-label{font-family:var(--mono);font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:1px}
-.node-fields{display:none}.node-fields.show{display:block}
+.nt-label{font-family:var(--mono);font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:1px;pointer-events:none}
+.node-fields{display:none;margin-top:10px}.node-fields.show{display:block}
 
 /* COIN INPUT */
-.coin-input{display:flex;align-items:center;gap:0;margin-bottom:8px}
-.coin-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;font-weight:700;font-family:var(--mono)}
+.coin-input{display:flex;align-items:center;margin-bottom:8px}
+.coin-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0;font-weight:700;font-family:var(--mono)}
 .coin-input input{flex:1;background:var(--black);border:1px solid var(--gray3);color:var(--white);font-family:var(--mono);font-size:.65rem;padding:8px 10px;outline:none;transition:border-color .2s}
 .coin-input input:focus{border-color:var(--yellow)}
 .ci-btc .coin-icon{background:rgba(247,147,26,.15);color:var(--btc);border:1px solid rgba(247,147,26,.3)}
@@ -100,7 +101,6 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .uov{position:absolute;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .uzone.has:hover .uov{opacity:1}
 .uov span{font-family:var(--mono);font-size:.58rem;color:var(--yellow);text-transform:uppercase;letter-spacing:2px}
-#fi{display:none}
 .fsec{display:flex;flex-direction:column;gap:13px}
 .f label{display:block;font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:5px}
 .f input,.f textarea{width:100%;background:var(--gray);border:1px solid var(--gray3);color:var(--white);font-family:var(--mono);font-size:.74rem;padding:9px 12px;outline:none;transition:border-color .2s;resize:none}
@@ -124,14 +124,11 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .hdisp{font-family:var(--mono);font-size:.55rem;color:#888;word-break:break-all;line-height:1.9;background:var(--black);padding:9px;margin-top:5px}
 .hdisp b{color:var(--yellow);display:block;margin-bottom:1px;margin-top:5px}
 .hdisp b:first-child{margin-top:0}
-
-/* TIP SECTION in mint */
 .tip-section{background:var(--gray);border:1px solid var(--gray3);padding:12px}
-.tip-section-title{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.tip-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:0}
-.tip-check{width:14px;height:14px;border:1px solid var(--gray3);display:flex;align-items:center;justify-content:center;font-size:.5rem;background:var(--black);flex-shrink:0;transition:all .2s}
+.tip-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px;width:100%;background:none;border:none;text-align:left}
+.tip-check{width:14px;height:14px;border:1px solid var(--gray3);display:flex;align-items:center;justify-content:center;font-size:.5rem;background:var(--black);flex-shrink:0;transition:all .2s;pointer-events:none}
 .tip-check.on{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
-.tip-label{font-family:var(--mono);font-size:.55rem;color:#888;text-transform:uppercase;letter-spacing:1px}
+.tip-label{font-family:var(--mono);font-size:.55rem;color:#888;text-transform:uppercase;letter-spacing:1px;pointer-events:none}
 .tip-fields{display:none;margin-top:10px}.tip-fields.show{display:block}
 
 /* CHAIN */
@@ -154,7 +151,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .bpph{width:62px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:1.1rem;border-left:1px solid var(--gray3)}
 .bconn{width:3px;height:12px;background:var(--gray3);margin-left:31px}
 .tag{display:inline-block;background:var(--black);border:1px solid var(--gray3);font-family:var(--mono);font-size:.48rem;padding:1px 4px;margin:1px;color:#666}
-.node-pill{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.48rem;padding:1px 6px;cursor:pointer;transition:all .2s;border:1px solid transparent}
+.node-pill{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.48rem;padding:1px 6px;border:1px solid transparent;cursor:pointer;transition:all .2s}
 .node-pill:hover{border-color:var(--yellow)!important}
 .node-pill.founder{background:rgba(255,230,0,.1);border-color:rgba(255,230,0,.25);color:var(--yellow)}
 .node-pill.regular{background:rgba(0,255,136,.07);border-color:rgba(0,255,136,.18);color:var(--green)}
@@ -162,7 +159,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .tip-pill:hover{border-color:var(--yellow);color:var(--yellow)}
 
 /* NODES */
-.nodes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:6px}
+.nodes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .node-card{background:var(--gray);border:1px solid var(--gray3);padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .node-card:hover{border-color:var(--yellow);transform:translateY(-2px)}
 .node-card.founder-card{border-color:rgba(255,230,0,.35)}
@@ -176,7 +173,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .nc-stat{font-family:var(--mono);font-size:.52rem;color:#555}
 .nc-stat b{color:var(--white);display:block;font-size:.76rem}
 .nc-coins{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
-.nc-coin{font-family:var(--mono);font-size:.48rem;padding:2px 6px;border-radius:0;font-weight:700}
+.nc-coin{font-family:var(--mono);font-size:.48rem;padding:2px 6px;font-weight:700}
 .nc-coin.btc{background:rgba(247,147,26,.15);color:var(--btc);border:1px solid rgba(247,147,26,.3)}
 .nc-coin.eth{background:rgba(98,126,234,.15);color:var(--eth);border:1px solid rgba(98,126,234,.3)}
 .nc-coin.bnb{background:rgba(240,185,11,.15);color:var(--bnb);border:1px solid rgba(240,185,11,.3)}
@@ -213,7 +210,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .np-meme img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
 .np-meme-name{padding:6px 8px;font-family:var(--mono);font-size:.52rem;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* TIP MODAL */
+/* TIP */
 .tip-modal{background:var(--gray);border:1px solid var(--yellow);max-width:500px;width:100%;animation:up .3s ease}
 .tip-modal-header{padding:14px 18px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;justify-content:space-between}
 .tip-modal-title{font-family:var(--display);font-size:1.1rem;letter-spacing:2px;color:var(--yellow)}
@@ -224,9 +221,8 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .tip-coin-name{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:1px;font-weight:700}
 .tip-addr-box{background:var(--black);padding:8px 10px;font-family:var(--mono);font-size:.56rem;color:#888;word-break:break-all;line-height:1.7;position:relative;cursor:pointer;border:1px solid var(--gray3);transition:border-color .2s}
 .tip-addr-box:hover{border-color:var(--yellow)}
-.tip-addr-box .copy-hint{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.5rem;color:#555;text-transform:uppercase;letter-spacing:1px}
+.copy-hint{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.5rem;color:#555;text-transform:uppercase;letter-spacing:1px}
 .copied{background:rgba(0,255,136,.08)!important;border-color:var(--green)!important;color:var(--green)!important}
-.tip-no-addr{font-family:var(--mono);font-size:.56rem;color:#444;padding:8px 0}
 
 /* VERIFY */
 .vsec{max-width:560px}
@@ -274,7 +270,6 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 .sigx{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.54rem;padding:4px 8px;border:1px solid var(--red);color:var(--red);margin-top:5px}
 .tip-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.3);color:var(--yellow);font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:1px;padding:6px 12px;cursor:pointer;transition:all .2s;margin-top:6px}
 .tip-btn:hover{background:rgba(255,230,0,.2);border-color:var(--yellow)}
-
 .empty{text-align:center;padding:58px 40px;border:1px dashed var(--gray3)}
 .eico{font-size:2.8rem;margin-bottom:11px}
 .etxt{font-family:var(--mono);font-size:.58rem;color:#555;text-transform:uppercase;letter-spacing:2px;line-height:2}
@@ -291,56 +286,50 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
     <div class="wbh"><div class="wlogo">Meme<span>Chain</span></div><div class="wsub">Blockchain de memes · identidade criptográfica</div></div>
     <div class="wbb">
       <div class="wtabs">
-        <button class="wtab active" onclick="wTab('create',this)">Criar Carteira</button>
-        <button class="wtab" onclick="wTab('import',this)">Importar</button>
+        <button class="wtab active" data-tab="create">Criar Carteira</button>
+        <button class="wtab" data-tab="import">Importar</button>
       </div>
-
-      <!-- CREATE -->
       <div class="wp active" id="wp-create">
         <div class="wi">Criptografia ECDSA P-256 gerada no browser. Sua chave privada <b>nunca sai do dispositivo.</b></div>
         <div class="wf"><label>Nome / Apelido *</label><input type="text" id="cName" placeholder="ex: MemeKing2024" maxlength="40"></div>
-
         <div class="wsect">💰 Endereços para gorjetas (opcional)</div>
-        <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="wBtc" placeholder="Endereço Bitcoin (BTC)"></div>
-        <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="wEth" placeholder="Endereço Ethereum (ETH)"></div>
-        <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="wBnb" placeholder="Endereço BNB / EVM"></div>
-        <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="wXmr" placeholder="Endereço Monero (XMR)"></div>
-        <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="wWow" placeholder="Endereço Wownero (WOW)"></div>
-
-        <div class="node-toggle" onclick="toggleNodeReg()" style="margin-top:14px">
+        <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="wBtc" placeholder="Bitcoin (BTC)"></div>
+        <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="wEth" placeholder="Ethereum (ETH)"></div>
+        <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="wBnb" placeholder="BNB / EVM"></div>
+        <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="wXmr" placeholder="Monero (XMR)"></div>
+        <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="wWow" placeholder="Wownero (WOW)"></div>
+        <button class="node-toggle" id="nodeToggleBtn">
           <div class="nt-check" id="ntCheck">✓</div>
           <div class="nt-label">Quero registrar um nó 🖥</div>
-        </div>
+        </button>
         <div class="node-fields" id="nodeFields">
           <div class="wi" style="border-color:var(--green);color:#00bb66;margin-top:10px">Os primeiros 10 nós ganham o badge <b>★ FUNDADOR</b> permanente na chain.</div>
           <div class="wf"><label>Nome do Nó *</label><input type="text" id="nodeName" placeholder="ex: MemesDoNorte" maxlength="50"></div>
           <div class="wf"><label>Descrição</label><textarea id="nodeDesc" placeholder="Quem você é? Por que roda esse nó?"></textarea></div>
-          <div class="wsect">🔗 Redes Sociais do Nó</div>
+          <div class="wsect">🔗 Redes Sociais</div>
           <div class="wf"><label>Twitter / X</label><input type="text" id="nodeTwitter" placeholder="@usuario"></div>
           <div class="wf"><label>Instagram</label><input type="text" id="nodeInsta" placeholder="@usuario"></div>
           <div class="wf"><label>Site</label><input type="text" id="nodeSite" placeholder="https://..."></div>
         </div>
-        <div class="werr" id="cErr">Por favor insira um nome.</div>
-        <button class="wbtn" style="margin-top:14px" onclick="createWallet()">GERAR CARTEIRA</button>
+        <div class="werr" id="cErr"></div>
+        <button class="wbtn" id="createBtn" style="margin-top:14px">GERAR CARTEIRA</button>
       </div>
-
-      <!-- IMPORT -->
       <div class="wp" id="wp-import">
-        <div class="wi">Cole o JSON exportado da sua carteira.</div>
-        <div class="wf"><label>JSON da carteira *</label><input type="text" id="iKey" placeholder='Cole o JSON aqui...'></div>
-        <div class="werr" id="iErr">JSON inválido.</div>
-        <button class="wbtn" onclick="importWallet()">IMPORTAR</button>
-        <button class="wbtn sec" onclick="skipW()">Entrar sem carteira</button>
+        <div class="wi">Cole o JSON exportado da sua carteira para recuperar sua identidade.</div>
+        <div class="wf"><label>JSON da carteira *</label><input type="text" id="iKey" placeholder="Cole o JSON aqui..."></div>
+        <div class="werr" id="iErr"></div>
+        <button class="wbtn" id="importBtn">IMPORTAR</button>
+        <button class="wbtn sec" id="skipBtn" style="margin-top:6px">Entrar sem carteira</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- NODE PROFILE OVERLAY -->
+<!-- NODE PROFILE -->
 <div class="nprofile" id="NP">
   <div class="np-header">
     <div class="np-logo">Meme<span>Chain</span> <span style="font-size:.9rem;color:#555;letter-spacing:1px">/ NÓ</span></div>
-    <button class="np-close" onclick="closeNP()">✕ FECHAR</button>
+    <button class="np-close" id="npCloseBtn">✕ FECHAR</button>
   </div>
   <div class="np-body" id="NPB"></div>
 </div>
@@ -350,7 +339,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
   <div class="logo">Meme<span>Chain</span></div>
   <div class="hright">
     <div class="hstats">BLOCOS: <b id="hB">0</b> &nbsp;|&nbsp; NÓS: <b id="hN">0</b> &nbsp;|&nbsp; CHAIN: <b id="hI" style="color:var(--green)">—</b></div>
-    <div class="wbadge" onclick="showP('profile',null)">
+    <div class="wbadge" id="profileBtn">
       <div class="wav" id="hAv"></div>
       <div><div class="wbn" id="hNm">—</div><div class="wba" id="hAd">sem carteira</div></div>
     </div>
@@ -358,11 +347,11 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
 </header>
 
 <div class="tabs">
-  <button class="tab active" id="t0" onclick="showP('mint',this)">⛏ Mintar</button>
-  <button class="tab" id="t1" onclick="showP('chain',this)">🔗 Chain</button>
-  <button class="tab" id="t2" onclick="showP('nodes',this)">🖥 Nós</button>
-  <button class="tab" id="t3" onclick="showP('verify',this)">✓ Verificar</button>
-  <button class="tab" id="t4" onclick="showP('profile',this)">👤 Carteira</button>
+  <button class="tab active" data-panel="mint">⛏ Mintar</button>
+  <button class="tab" data-panel="chain">🔗 Chain</button>
+  <button class="tab" data-panel="nodes">🖥 Nós</button>
+  <button class="tab" data-panel="verify">✓ Verificar</button>
+  <button class="tab" data-panel="profile">👤 Carteira</button>
 </div>
 
 <main>
@@ -371,35 +360,32 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
     <div class="slabel">Registrar meme com assinatura criptográfica</div>
     <div class="mgrid">
       <div>
-        <div class="uzone" id="UZ" onclick="document.getElementById('fi').click()">
+        <div class="uzone" id="UZ">
           <div class="uph" id="UPH"><span class="uicon">🖼</span><div class="utxt">Clique para subir o meme<br><br>PNG · JPG · GIF · WEBP</div></div>
           <img class="prev" id="PI" style="display:none"/>
           <div class="uov"><span>Trocar imagem</span></div>
         </div>
-        <input type="file" id="fi" accept="image/*" onchange="handleFile(event)">
+        <input type="file" id="fi" accept="image/*" style="display:none">
         <div class="szbar" style="margin-top:8px"><span id="szT" style="color:#555">Nenhuma imagem carregada</span><div class="szfill"><div class="szfi" id="szF"></div></div></div>
       </div>
       <div class="fsec">
         <div class="f"><label>Nome do Meme *</label><input type="text" id="MN" placeholder="ex: Distracted Boyfriend BR" maxlength="80"></div>
         <div class="f"><label>Descrição</label><textarea id="MD" placeholder="De onde veio? Qual a piada?"></textarea></div>
         <div class="f"><label>Tags (vírgula)</label><input type="text" id="MT" placeholder="brasil, humor, 2024"></div>
-
-        <!-- TIP ADDRESSES FOR MEME -->
         <div class="tip-section">
-          <div class="tip-toggle" onclick="toggleTip()">
+          <button class="tip-toggle" id="tipToggleBtn">
             <div class="tip-check" id="tipCheck">✓</div>
             <div class="tip-label">💰 Aceitar gorjetas neste meme</div>
-          </div>
+          </button>
           <div class="tip-fields" id="tipFields">
-            <div style="font-family:var(--mono);font-size:.52rem;color:#555;margin-bottom:8px;margin-top:6px">Endereços onde receberá gorjetas por este meme (herda da carteira se vazio)</div>
-            <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="mBtc" placeholder="Bitcoin (herda da carteira)"></div>
-            <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="mEth" placeholder="Ethereum (herda da carteira)"></div>
-            <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="mBnb" placeholder="BNB / EVM (herda da carteira)"></div>
-            <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="mXmr" placeholder="Monero (herda da carteira)"></div>
-            <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="mWow" placeholder="Wownero (herda da carteira)"></div>
+            <div style="font-family:var(--mono);font-size:.52rem;color:#555;margin-bottom:8px;margin-top:6px">Deixe vazio para herdar da carteira</div>
+            <div class="coin-input ci-btc"><div class="coin-icon">₿</div><input type="text" id="mBtc" placeholder="Bitcoin"></div>
+            <div class="coin-input ci-eth"><div class="coin-icon">Ξ</div><input type="text" id="mEth" placeholder="Ethereum"></div>
+            <div class="coin-input ci-bnb"><div class="coin-icon">BNB</div><input type="text" id="mBnb" placeholder="BNB / EVM"></div>
+            <div class="coin-input ci-xmr"><div class="coin-icon">ɱ</div><input type="text" id="mXmr" placeholder="Monero"></div>
+            <div class="coin-input ci-wow"><div class="coin-icon">W</div><input type="text" id="mWow" placeholder="Wownero"></div>
           </div>
         </div>
-
         <div>
           <div style="font-family:var(--mono);font-size:.54rem;text-transform:uppercase;letter-spacing:2px;color:#555;margin-bottom:5px">Assinante</div>
           <div class="sigbox">
@@ -409,7 +395,7 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
           </div>
         </div>
         <div class="succ" id="SUC"><div class="succt">✓ MEME MINTADO</div><div class="hdisp" id="SH"></div></div>
-        <button class="mbtn" id="MB" onclick="mintMeme()" disabled>ASSINAR E MINTAR</button>
+        <button class="mbtn" id="MB" disabled>ASSINAR E MINTAR</button>
       </div>
     </div>
   </div>
@@ -436,7 +422,10 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
   <div class="panel" id="panel-verify">
     <div class="slabel">Verificar hash e assinatura</div>
     <div class="vsec">
-      <div class="viw"><input type="text" id="VI" placeholder="Cole o hash do bloco..."/><button class="vbtn" onclick="doVerify()">VERIFICAR</button></div>
+      <div class="viw">
+        <input type="text" id="VI" placeholder="Cole o hash do bloco..."/>
+        <button class="vbtn" id="verifyBtn">VERIFICAR</button>
+      </div>
       <div class="vres" id="VR"><div class="vstat" id="VS"></div><img class="vmimg" id="VIM" style="display:none"/><div id="VD"></div></div>
     </div>
   </div>
@@ -445,380 +434,817 @@ main{padding:30px 34px;max-width:1160px;margin:0 auto}
   <div class="panel" id="panel-profile"><div id="PC"></div></div>
 </main>
 
-<!-- MODAL (bloco) -->
-<div class="mov" id="MOV" onclick="closeM(event)">
-  <div class="modal" id="MODBOX">
-    <div class="mhdr"><div class="mtit" id="MT2">BLOCO</div><button class="mclose" onclick="closeMD()">✕</button></div>
+<!-- MODAL bloco -->
+<div class="mov" id="MOV">
+  <div class="modal">
+    <div class="mhdr"><div class="mtit" id="MT2">BLOCO</div><button class="mclose" id="modalCloseBtn">✕</button></div>
     <div class="mbody" id="MB2"></div>
   </div>
 </div>
 
-<!-- MODAL (tip) -->
-<div class="mov" id="TIPMOV" onclick="closeTipM(event)">
+<!-- MODAL tip -->
+<div class="mov" id="TIPMOV">
   <div class="tip-modal">
-    <div class="tip-modal-header"><div class="tip-modal-title" id="TIP_TITLE">💰 GORJETA</div><button class="mclose" onclick="document.getElementById('TIPMOV').classList.remove('show')">✕</button></div>
+    <div class="tip-modal-header"><div class="tip-modal-title" id="TIP_TITLE">💰 GORJETA</div><button class="mclose" id="tipModalCloseBtn">✕</button></div>
     <div class="tip-coins" id="TIP_BODY"></div>
   </div>
 </div>
 
 <script>
-// ══ STATE ══
-let wallet=null,chain=[],nodes=[];
-const MAX_FOUNDER=10;
-const COINS=[{id:'btc',sym:'BTC',icon:'₿',cls:'btc'},{id:'eth',sym:'ETH',icon:'Ξ',cls:'eth'},{id:'bnb',sym:'BNB',icon:'BNB',cls:'bnb'},{id:'xmr',sym:'XMR',icon:'ɱ',cls:'xmr'},{id:'wow',sym:'WOW',icon:'W',cls:'wow'}];
+// ══════════════════════════════════════════
+// ESTADO GLOBAL
+// ══════════════════════════════════════════
+var wallet = null;
+var chain = [];
+var nodes = [];
+var imgData = null;
+var isNodeReg = false;
+var isTipOpen = false;
+var MAX_FOUNDER = 10;
+var COINS = [
+  {id:'btc',sym:'BTC',icon:'₿',cls:'btc'},
+  {id:'eth',sym:'ETH',icon:'Ξ',cls:'eth'},
+  {id:'bnb',sym:'BNB',icon:'BNB',cls:'bnb'},
+  {id:'xmr',sym:'XMR',icon:'ɱ',cls:'xmr'},
+  {id:'wow',sym:'WOW',icon:'W',cls:'wow'}
+];
 
-// ══ CRYPTO ══
-async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
-async function genKP(){return crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);}
-async function expKeys(kp){return{pub:await crypto.subtle.exportKey('jwk',kp.publicKey),priv:await crypto.subtle.exportKey('jwk',kp.privateKey)};}
-async function impPub(j){return crypto.subtle.importKey('jwk',j,{name:'ECDSA',namedCurve:'P-256'},true,['verify']);}
-async function impPriv(j){return crypto.subtle.importKey('jwk',j,{name:'ECDSA',namedCurve:'P-256'},true,['sign']);}
-async function signD(privJwk,data){const k=await impPriv(privJwk);const s=await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},k,new TextEncoder().encode(data));return Array.from(new Uint8Array(s)).map(b=>b.toString(16).padStart(2,'0')).join('');}
-async function verifySig(pubJwk,data,sigHex){try{const k=await impPub(pubJwk);const sb=new Uint8Array(sigHex.match(/.{1,2}/g).map(b=>parseInt(b,16)));return crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},k,sb,new TextEncoder().encode(data));}catch{return false;}}
-function deriveAddr(pub){const raw=pub.x+pub.y;let h=0;for(let i=0;i<raw.length;i++){h=((h<<5)-h)+raw.charCodeAt(i);h|=0;}return'0x'+Math.abs(h).toString(16).padStart(8,'0')+raw.substring(0,8).replace(/[^a-zA-Z0-9]/g,'').toLowerCase().padEnd(8,'0');}
-function rndColor(s){const c=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff6bda','#ff9a3c','#00d4aa','#a78bfa'];let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return c[Math.abs(h)%c.length];}
+// ══════════════════════════════════════════
+// CRYPTO
+// ══════════════════════════════════════════
+async function sha256(s) {
+  var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(function(x){ return x.toString(16).padStart(2,'0'); }).join('');
+}
+async function genKP() {
+  return crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'}, true, ['sign','verify']);
+}
+async function expKeys(kp) {
+  return {
+    pub: await crypto.subtle.exportKey('jwk', kp.publicKey),
+    priv: await crypto.subtle.exportKey('jwk', kp.privateKey)
+  };
+}
+async function impPub(j) {
+  return crypto.subtle.importKey('jwk', j, {name:'ECDSA',namedCurve:'P-256'}, true, ['verify']);
+}
+async function impPriv(j) {
+  return crypto.subtle.importKey('jwk', j, {name:'ECDSA',namedCurve:'P-256'}, true, ['sign']);
+}
+async function signD(privJwk, data) {
+  var k = await impPriv(privJwk);
+  var s = await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'}, k, new TextEncoder().encode(data));
+  return Array.from(new Uint8Array(s)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+}
+async function verifySig(pubJwk, data, sigHex) {
+  try {
+    var k = await impPub(pubJwk);
+    var sb = new Uint8Array(sigHex.match(/.{1,2}/g).map(function(b){ return parseInt(b,16); }));
+    return crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'}, k, sb, new TextEncoder().encode(data));
+  } catch(e) { return false; }
+}
+function deriveAddr(pub) {
+  var raw = pub.x + pub.y;
+  var h = 0;
+  for (var i = 0; i < raw.length; i++) { h = ((h<<5)-h) + raw.charCodeAt(i); h|=0; }
+  return '0x' + Math.abs(h).toString(16).padStart(8,'0') + raw.substring(0,8).replace(/[^a-zA-Z0-9]/g,'').toLowerCase().padEnd(8,'0');
+}
+function rndColor(s) {
+  var c = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff6bda','#ff9a3c','#00d4aa','#a78bfa'];
+  var h = 0;
+  for (var i = 0; i < s.length; i++) { h = ((h<<5)-h) + s.charCodeAt(i); h|=0; }
+  return c[Math.abs(h) % c.length];
+}
 
-// ══ TIP HELPERS ══
-function getTipAddresses(overrides,fallback){
-  const tips={};
-  COINS.forEach(c=>{
-    const v=(overrides&&overrides[c.id])||fallback&&fallback[c.id]||'';
-    if(v)tips[c.id]=v;
+// ══════════════════════════════════════════
+// TIPS
+// ══════════════════════════════════════════
+function readCoinInputs(prefix) {
+  var t = {};
+  COINS.forEach(function(c) {
+    var key = prefix + c.id.charAt(0).toUpperCase() + c.id.slice(1);
+    var el = document.getElementById(key);
+    if (el && el.value.trim()) t[c.id] = el.value.trim();
   });
-  return Object.keys(tips).length?tips:null;
+  return Object.keys(t).length ? t : null;
 }
-function hasTips(obj){return obj&&COINS.some(c=>obj[c.id]);}
-function tipCoinsHtml(tips){
-  if(!hasTips(tips))return'';
-  return COINS.filter(c=>tips[c.id]).map(c=><span class="nc-coin ${c.cls}">${c.sym}</span>).join('');
+function hasTips(obj) {
+  if (!obj) return false;
+  return COINS.some(function(c){ return obj[c.id]; });
 }
-function readCoinInputs(prefix){
-  const t={};COINS.forEach(c=>{const v=document.getElementById(prefix+c.id.charAt(0).toUpperCase()+c.id.slice(1))?.value.trim();if(v)t[c.id]=v;});
-  return Object.keys(t).length?t:null;
+function tipCoinsHtml(tips) {
+  if (!hasTips(tips)) return '';
+  return COINS.filter(function(c){ return tips[c.id]; })
+    .map(function(c){ return '<span class="nc-coin '+c.cls+'">'+c.sym+'</span>'; }).join('');
 }
-
-// ══ NODE ══
-function isFounder(addr){const i=nodes.findIndex(n=>n.address===addr);return i>=0&&i<MAX_FOUNDER;}
-function getNode(addr){return nodes.find(n=>n.address===addr)||null;}
-function registerNode(nd){if(nodes.find(n=>n.address===nd.address))return;nodes.push({...nd,isFounder:nodes.length<MAX_FOUNDER,registeredAt:Date.now(),blocksValidated:0});saveNodes();}
-function saveNodes(){localStorage.setItem('mc_nodes',JSON.stringify(nodes));}
-function loadNodes(){nodes=JSON.parse(localStorage.getItem('mc_nodes')||'[]');}
-
-// ══ WALLET ══
-let isNodeReg=false,isTipOpen=false;
-function toggleNodeReg(){isNodeReg=!isNodeReg;document.getElementById('ntCheck').classList.toggle('on',isNodeReg);document.getElementById('nodeFields').classList.toggle('show',isNodeReg);}
-function toggleTip(){isTipOpen=!isTipOpen;document.getElementById('tipCheck').classList.toggle('on',isTipOpen);document.getElementById('tipFields').classList.toggle('show',isTipOpen);if(isTipOpen)prefillTipFromWallet();}
-function prefillTipFromWallet(){if(!wallet)return;COINS.forEach(c=>{const el=document.getElementById('m'+c.id.charAt(0).toUpperCase()+c.id.slice(1));if(el&&!el.value&&wallet.tips&&wallet.tips[c.id])el.placeholder=wallet.tips[c.id];});}
-function wTab(t,el){document.querySelectorAll('.wtab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.wp').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('wp-'+t).classList.add('active');}
-
-async function createWallet(){
-  const n=document.getElementById('cName').value.trim();
-  if(!n){document.getElementById('cErr').classList.add('show');return;}
-  document.getElementById('cErr').classList.remove('show');
-  const kp=await genKP();const{pub,priv}=await expKeys(kp);
-  const addr=deriveAddr(pub);const color=rndColor(addr);
-  const tips=readCoinInputs('w');
-  wallet={name:n,address:addr,publicKeyJwk:pub,privateKeyJwk:priv,color,isNode:isNodeReg,tips};
-  if(isNodeReg){
-    const nn=document.getElementById('nodeName').value.trim()||n;
-    wallet.nodeData={name:nn,description:document.getElementById('nodeDesc').value.trim(),twitter:document.getElementById('nodeTwitter').value.trim(),instagram:document.getElementById('nodeInsta').value.trim(),site:document.getElementById('nodeSite').value.trim(),address:addr,color,ownerName:n,tips};
-    registerNode(wallet.nodeData);
-  }
-  localStorage.setItem('mc_w',JSON.stringify(wallet));
-  closeWS();
+function buildCoinSection(tips) {
+  if (!hasTips(tips)) return '';
+  var html = '<div style="background:var(--gray);border:1px solid var(--gray3);padding:16px">';
+  COINS.filter(function(c){ return tips[c.id]; }).forEach(function(c) {
+    html += '<div class="tip-coin-row">';
+    html += '<div class="tip-coin-header">';
+    html += '<span style="width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;background:var(--black);border:1px solid var(--gray3);font-family:var(--mono);font-size:.65rem;font-weight:700;color:var(--'+c.cls+')">'+c.icon+'</span>';
+    html += '<span class="tip-coin-name" style="color:var(--'+c.cls+')">'+c.sym+'</span>';
+    html += '</div>';
+    html += '<div class="tip-addr-box" data-addr="'+tips[c.id]+'">'+tips[c.id]+'<span class="copy-hint">copiar</span></div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
 }
 
-async function importWallet(){
-  try{const d=JSON.parse(document.getElementById('iKey').value.trim());if(!d.name||!d.privateKeyJwk||!d.publicKeyJwk)throw 0;wallet=d;localStorage.setItem('mc_w',JSON.stringify(wallet));if(wallet.nodeData&&!getNode(wallet.address))registerNode(wallet.nodeData);closeWS();}
-  catch{document.getElementById('iErr').classList.add('show');}
+// ══════════════════════════════════════════
+// NODES
+// ══════════════════════════════════════════
+function getNode(addr) {
+  return nodes.find(function(n){ return n.address === addr; }) || null;
 }
-function skipW(){closeWS();}
-function closeWS(){document.getElementById('WS').classList.add('hidden');updateWUI();loadChain();}
-
-function nodeBadgesHtml(addr){
-  const nd=getNode(addr);if(!nd)return'';
-  return(nd.isFounder?<span class="badge badge-founder">★ FUNDADOR</span>:'')+<span class="badge badge-node">🖥 NÓ</span>;
-}
-
-function updateWUI(){
-  const av=document.getElementById('hAv'),nm=document.getElementById('hNm'),ad=document.getElementById('hAd');
-  const sav=document.getElementById('SAv'),sn=document.getElementById('SN'),sa=document.getElementById('SA'),sb=document.getElementById('SB');
-  if(!wallet){av.textContent='?';av.style.background='#333';nm.innerHTML='Visitante';ad.textContent='sem carteira';sav.textContent='?';sav.style.background='#333';sn.innerHTML='—';sa.textContent='crie uma carteira';sb.style.display='none';return;}
-  const ini=wallet.name.substring(0,2).toUpperCase(),c=wallet.color;
-  [av,sav].forEach(x=>{x.textContent=ini;x.style.background=c;x.style.color='#000';});
-  const bdg=nodeBadgesHtml(wallet.address);
-  nm.innerHTML=wallet.name+(bdg?'&nbsp;'+bdg:'');ad.textContent=wallet.address;
-  sn.innerHTML=wallet.name+(bdg?'&nbsp;'+bdg:'');sa.textContent=wallet.address;sb.style.display='flex';
-  checkMR();updH();
-}
-
-// ══ CHAIN ══
-function loadChain(){chain=JSON.parse(localStorage.getItem('mc_c')||'[]');updH();}
-function saveChain(){localStorage.setItem('mc_c',JSON.stringify(chain));}
-async function createBlock(name,desc,tags,imgHex,memeTips){
-  const prev=chain.length>0?chain[chain.length-1].hash:'0'.repeat(64);
-  const bd={index:chain.length,timestamp:Date.now(),name,desc,tags,imageHex:imgHex,
-    creator:wallet?.name||'anônimo',address:wallet?.address||null,
-    publicKeyJwk:wallet?.publicKeyJwk||null,
-    tips:memeTips||wallet?.tips||null,
-    nodeAddress:wallet?.isNode?wallet.address:null,
-    isNodeBlock:!!(wallet?.isNode),prevHash:prev};
-  const sig=wallet?.privateKeyJwk?await signD(wallet.privateKeyJwk,JSON.stringify(bd)):null;
-  const ws={...bd,signature:sig};
-  if(wallet?.isNode){const nd=getNode(wallet.address);if(nd){nd.blocksValidated++;saveNodes();}}
-  return{...ws,hash:await sha256(JSON.stringify(ws))};
-}
-async function verifyBlock(blk){
-  const{hash,...d}=blk;const ok=await sha256(JSON.stringify(d))===hash;
-  if(!ok)return{hashOk:false,sigOk:false};
-  let sigOk=false;
-  if(blk.signature&&blk.publicKeyJwk){const{hash:,signature:_,...nd}=blk;sigOk=await verifySig(blk.publicKeyJwk,JSON.stringify(nd),blk.signature);}
-  return{hashOk:true,sigOk};
-}
-async function verifyChain(){for(let i=0;i<chain.length;i++){const{hashOk}=await verifyBlock(chain[i]);if(!hashOk)return false;if(i>0&&chain[i].prevHash!==chain[i-1].hash)return false;}return true;}
-
-// ══ IMAGE ══
-let imgData=null;
-function compressImg(file){return new Promise(res=>{const r=new FileReader();r.onload=e=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas');const M=540;let w=i.width,h=i.height;if(w>h){if(w>M){h=h*M/w;w=M;}}else{if(h>M){w=w*M/h;h=M;}}c.width=Math.round(w);c.height=Math.round(h);c.getContext('2d').drawImage(i,0,0,c.width,c.height);res(c.toDataURL('image/webp',.76));};i.src=e.target.result;};r.readAsDataURL(file);});}
-function b64hex(b){const r=atob(b.split(',')[1]||b);let h='';for(let i=0;i<r.length;i++)h+=r.charCodeAt(i).toString(16).padStart(2,'0');return h;}
-function hex64(h){let s='';for(let i=0;i<h.length;i+=2)s+=String.fromCharCode(parseInt(h.substr(i,2),16));return'data:image/webp;base64,'+btoa(s);}
-async function handleFile(e){
-  const f=e.target.files[0];if(!f)return;
-  document.getElementById('UPH').style.display='none';
-  const pi=document.getElementById('PI');pi.src=URL.createObjectURL(f);pi.style.display='block';
-  document.getElementById('UZ').classList.add('has');
-  const c=await compressImg(f);imgData=c;
-  const kb=Math.round(b64hex(c).length/2/1024);const pct=Math.min(100,(kb/400)*100);
-  document.getElementById('szT').innerHTML=<b style="color:var(--yellow)">${kb} KB</b> · WebP;
-  document.getElementById('szF').style.width=pct+'%';document.getElementById('szF').style.background=kb>300?'var(--red)':'var(--yellow)';
-  checkMR();
-}
-function checkMR(){document.getElementById('MB').disabled=!(document.getElementById('MN').value.trim()&&imgData&&wallet);}
-document.getElementById('MN').addEventListener('input',checkMR);
-async function mintMeme(){
-  if(!wallet||!imgData)return;const name=document.getElementById('MN').value.trim();if(!name)return;
-  const btn=document.getElementById('MB');btn.disabled=true;btn.textContent='ASSINANDO...';
-  const memeTips=isTipOpen?readCoinInputs('m'):null;
-  const effectiveTips=getTipAddresses(memeTips,wallet.tips);
-  const blk=await createBlock(name,document.getElementById('MD').value.trim(),document.getElementById('MT').value.trim().split(',').map(t=>t.trim()).filter(Boolean),b64hex(imgData),effectiveTips);
-  chain.push(blk);saveChain();
-  document.getElementById('SH').innerHTML=<b>HASH</b>${blk.hash}<b>BLOCO Nº</b>${blk.index}<b>CRIADOR</b>${blk.creator}<b>GORJETAS</b>${blk.tips?COINS.filter(c=>blk.tips[c.id]).map(c=>c.sym).join(', '):'nenhuma'}<b>TIMESTAMP</b>${new Date(blk.timestamp).toLocaleString('pt-BR')};
-  document.getElementById('SUC').classList.add('show');btn.textContent='ASSINAR E MINTAR';updH();
-  setTimeout(()=>{document.getElementById('MN').value='';document.getElementById('MD').value='';document.getElementById('MT').value='';imgData=null;document.getElementById('UZ').classList.remove('has');document.getElementById('UPH').style.display='flex';document.getElementById('PI').style.display='none';document.getElementById('szF').style.width='0%';document.getElementById('szT').style.color='#555';document.getElementById('szT').textContent='Nenhuma imagem carregada';document.getElementById('SUC').classList.remove('show');checkMR();},6000);
-}
-
-// ══ UI ══
-function showP(n,el){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('panel-'+n).classList.add('active');
-  if(el)el.classList.add('active');
-  if(n==='chain')renderChain();
-  if(n==='nodes')renderNodes();
-  if(n==='profile')renderProfile();
-}
-
-async function renderChain(){
-  const bl=document.getElementById('BL');document.getElementById('BC').textContent=chain.length;
-  if(!chain.length){bl.innerHTML=<div class="empty"><div class="eico">⛓</div><div class="etxt">Chain vazia<br>Minte o primeiro meme</div></div>;return;}
-  const v=await verifyChain();const ci=document.getElementById('CI');
-  ci.innerHTML=v?<span class="dot"></span>ÍNTEGRA:⚠ CORROMPIDA;ci.className='integ'+(v?'':' broken');
-  const rev=[...chain].reverse();
-  const rows=await Promise.all(rev.map(async(blk,ri)=>{
-    const{sigOk}=await verifyBlock(blk);
-    const mine=wallet&&blk.address===wallet.address;
-    const tags=blk.tags?.length?blk.tags.map(t=><span class="tag">${t}</span>).join(''):'';
-    const prev=blk.imageHex?<img class="bprev" src="${hex64(blk.imageHex)}"/>:<div class="bpph">🖼</div>;
-    const sigB=blk.signature?<span class="${sigOk?'vok':'vno'}">${sigOk?'✓ assinado':'⚠ sig'}</span>:<span style="color:#333">sem assinatura</span>;
-    let nodePill='';
-    if(blk.isNodeBlock&&blk.nodeAddress){const nd=getNode(blk.nodeAddress);if(nd)nodePill=<span class="node-pill ${nd.isFounder?'founder':'regular'}" onclick="event.stopPropagation();openNP('${blk.nodeAddress}')">${nd.isFounder?'★':''} ${nd.name}</span>;}
-    const tipPill=hasTips(blk.tips)?<span class="tip-pill" onclick="event.stopPropagation();openTipModal('${blk.hash}','creator')">💰 gorjeta</span>:'';
-    const conn=ri<rev.length-1?<div class="bconn"></div>:'';
-    return`<div class="blk ${blk.index===0?'genesis':''} ${mine?'mine':''}" onclick="openBlk(${blk.index})"><div class="bidx">#${blk.index}</div><div class="bbody"><div class="bmn">${blk.name}</div><div class="bmeta"><span class="addr">${blk.creator}</span><br>${sigB} ${nodePill} ${tipPill}<br><span style="color:#333">${new Date(blk.timestamp).toLocaleString('pt-BR')}</span><br>${tags}</div></div>${prev}</div>${conn}`;
+function registerNode(nd) {
+  if (nodes.find(function(n){ return n.address === nd.address; })) return;
+  nodes.push(Object.assign({}, nd, {
+    isFounder: nodes.length < MAX_FOUNDER,
+    registeredAt: Date.now(),
+    blocksValidated: 0
   }));
-  bl.innerHTML=rows.join('');
+  saveNodes();
+}
+function saveNodes() { localStorage.setItem('mc_nodes', JSON.stringify(nodes)); }
+function loadNodes() { nodes = JSON.parse(localStorage.getItem('mc_nodes') || '[]'); }
+function nodeBadgesHtml(addr) {
+  var nd = getNode(addr);
+  if (!nd) return '';
+  return (nd.isFounder ? '<span class="badge badge-founder">★ FUNDADOR</span>' : '') +
+         '<span class="badge badge-node">🖥 NÓ</span>';
 }
 
-function renderNodes(){
-  const nl=document.getElementById('NL');
-  if(!nodes.length){nl.innerHTML=<div class="empty"><div class="eico">🖥</div><div class="etxt">Nenhum nó registrado<br>Crie uma carteira e registre o primeiro nó</div></div>;return;}
-  const fn=nodes.filter(n=>n.isFounder),rn=nodes.filter(n=>!n.isFounder);
-  let html='';
-  if(fn.length){html+=<div class="slabel" style="margin-bottom:14px">★ Nós Fundadores (${fn.length}/${MAX_FOUNDER})</div><div class="nodes-grid" style="margin-bottom:28px">${fn.map(nodeCardHtml).join('')}</div>;}
-  if(rn.length){html+=<div class="slabel" style="margin-bottom:14px">Validadores</div><div class="nodes-grid">${rn.map(nodeCardHtml).join('')}</div>;}
-  nl.innerHTML=html;
+// ══════════════════════════════════════════
+// WALLET
+// ══════════════════════════════════════════
+function closeWS() {
+  document.getElementById('WS').classList.add('hidden');
+  updateWUI();
+  loadChain();
 }
 
-function nodeCardHtml(nd){
-  const ini=nd.name.substring(0,2).toUpperCase();
-  const mc=chain.filter(b=>b.nodeAddress===nd.address).length;
-  const coins=tipCoinsHtml(nd.tips);
-  return`<div class="node-card ${nd.isFounder?'founder-card':''}" onclick="openNP('${nd.address}')">
-    <div class="nc-top"><div class="nc-av" style="background:${nd.color||'#333'};color:#000">${ini}</div>
-    <div><div class="nc-name">${nd.name}${nd.isFounder?'<span class="badge badge-founder">★ FUNDADOR</span>':''}</div><div class="nc-addr">${nd.address}</div></div></div>
-    ${nd.description?<div class="nc-desc">${nd.description}</div>:''}
-    <div class="nc-stats"><div class="nc-stat"><b>${mc}</b>memes</div><div class="nc-stat"><b>${nd.isFounder?'#'+(nodes.indexOf(nd)+1):'—'}</b>${nd.isFounder?'fundador':'validador'}</div></div>
-    ${coins?<div class="nc-coins">${coins}</div>:''}
-  </div>`;
+async function createWallet() {
+  var nameEl = document.getElementById('cName');
+  var errEl  = document.getElementById('cErr');
+  var btn    = document.getElementById('createBtn');
+  var n = nameEl ? nameEl.value.trim() : '';
+  if (!n) {
+    errEl.textContent = 'Por favor insira um nome.';
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'GERANDO...';
+  try {
+    var kp   = await genKP();
+    var keys = await expKeys(kp);
+    var addr  = deriveAddr(keys.pub);
+    var color = rndColor(addr);
+    var tips  = readCoinInputs('w');
+    wallet = {name:n, address:addr, publicKeyJwk:keys.pub, privateKeyJwk:keys.priv, color:color, isNode:isNodeReg, tips:tips};
+    if (isNodeReg) {
+      var nnEl = document.getElementById('nodeName');
+      var nn   = (nnEl && nnEl.value.trim()) || n;
+      wallet.nodeData = {
+        name: nn,
+        description: (document.getElementById('nodeDesc') || {}).value || '',
+        twitter:     (document.getElementById('nodeTwitter') || {}).value || '',
+        instagram:   (document.getElementById('nodeInsta') || {}).value || '',
+        site:        (document.getElementById('nodeSite') || {}).value || '',
+        address: addr, color: color, ownerName: n, tips: tips
+      };
+      registerNode(wallet.nodeData);
+    }
+    localStorage.setItem('mc_w', JSON.stringify(wallet));
+    closeWS();
+  } catch(e) {
+    console.error('createWallet error:', e);
+    errEl.textContent = 'Erro ao gerar carteira: ' + e.message;
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'GERAR CARTEIRA';
+  }
 }
 
-function openNP(addr){
-  const nd=getNode(addr);if(!nd)return;
-  const ini=nd.name.substring(0,2).toUpperCase();
-  const myMemes=chain.filter(b=>b.nodeAddress===addr);
-  const fi=nodes.filter(n=>n.isFounder).findIndex(n=>n.address===addr);
-  const socials=[nd.twitter?<a class="np-social" href="https://twitter.com/${nd.twitter.replace('@','')}" target="_blank">𝕏 ${nd.twitter}</a>:'',nd.instagram?<a class="np-social" href="https://instagram.com/${nd.instagram.replace('@','')}" target="_blank">📸 ${nd.instagram}</a>:'',nd.site?<a class="np-social" href="${nd.site}" target="_blank">🌐 ${nd.site}</a>:''].filter(Boolean).join('');
-  const bdg=[nd.isFounder?<span class="badge badge-founder" style="font-size:.62rem;padding:3px 8px">★ FUNDADOR #${fi+1}</span>:'',<span class="badge badge-node" style="font-size:.62rem;padding:3px 8px">🖥 VALIDADOR</span>].filter(Boolean).join('');
-  const coins=hasTips(nd.tips)?buildCoinSection(nd.tips,nd.name,'nó'):'';
-  const mg=myMemes.length?myMemes.map(b=><div class="np-meme" onclick="openBlk(${b.index})"><img src="${hex64(b.imageHex)}"/><div class="np-meme-name">${b.name}</div></div>).join(''):<div class="empty" style="margin-top:0"><div class="eico">🖼</div><div class="etxt">Nenhum meme validado</div></div>;
-  document.getElementById('NPB').innerHTML=`
-    <div class="np-hero ${nd.isFounder?'is-founder':''}">
-      <div class="np-av" style="background:${nd.color||'#333'};color:#000">${ini}</div>
-      <div style="flex:1">
-        <div class="np-name">${nd.name}</div>
-        <div class="np-addr">${nd.address}</div>
-        ${nd.description?<div class="np-desc">${nd.description}</div>:''}
-        <div class="np-badges">${bdg}</div>
-        ${socials?<div class="np-socials">${socials}</div>:''}
-      </div>
-    </div>
-    <div class="np-stats">
-      <div class="np-stat"><div class="np-stat-val">${myMemes.length}</div><div class="np-stat-label">Memes Validados</div></div>
-      <div class="np-stat"><div class="np-stat-val">${nd.isFounder?'#'+(fi+1):'—'}</div><div class="np-stat-label">${nd.isFounder?'Fundador':'Validador'}</div></div>
-      <div class="np-stat"><div class="np-stat-val">${nodes.length}</div><div class="np-stat-label">Total Nós</div></div>
-      <div class="np-stat"><div class="np-stat-val">${new Date(nd.registeredAt).toLocaleDateString('pt-BR')}</div><div class="np-stat-label">Membro desde</div></div>
-    </div>
-    ${coins?<div style="margin-bottom:28px"><div class="slabel" style="margin-bottom:14px">💰 Gorjetas para este nó</div>${coins}</div>:''}
-    <div class="slabel">Memes Validados</div>
-    <div class="np-memes-grid">${mg}</div>`;
+async function importWallet() {
+  var keyEl = document.getElementById('iKey');
+  var errEl = document.getElementById('iErr');
+  var btn   = document.getElementById('importBtn');
+  var raw   = keyEl ? keyEl.value.trim() : '';
+  if (!raw) {
+    errEl.textContent = 'Cole o JSON da carteira.';
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'IMPORTANDO...';
+  try {
+    var d = JSON.parse(raw);
+    if (!d.name || !d.privateKeyJwk || !d.publicKeyJwk) throw new Error('Campos obrigatórios ausentes');
+    wallet = d;
+    localStorage.setItem('mc_w', JSON.stringify(wallet));
+    if (wallet.nodeData && !getNode(wallet.address)) registerNode(wallet.nodeData);
+    closeWS();
+  } catch(e) {
+    console.error('importWallet error:', e);
+    errEl.textContent = 'JSON inválido ou corrompido.';
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'IMPORTAR';
+  }
+}
+
+function updateWUI() {
+  var av  = document.getElementById('hAv');
+  var nm  = document.getElementById('hNm');
+  var ad  = document.getElementById('hAd');
+  var sav = document.getElementById('SAv');
+  var sn  = document.getElementById('SN');
+  var sa  = document.getElementById('SA');
+  var sb  = document.getElementById('SB');
+  if (!wallet) {
+    av.textContent = '?'; av.style.background = '#333';
+    nm.innerHTML = 'Visitante'; ad.textContent = 'sem carteira';
+    sav.textContent = '?'; sav.style.background = '#333';
+    sn.innerHTML = '—'; sa.textContent = 'crie uma carteira'; sb.style.display = 'none';
+    return;
+  }
+  var ini = wallet.name.substring(0,2).toUpperCase();
+  var c   = wallet.color;
+  [av, sav].forEach(function(x){ x.textContent=ini; x.style.background=c; x.style.color='#000'; });
+  var bdg = nodeBadgesHtml(wallet.address);
+  nm.innerHTML = wallet.name + (bdg ? '&nbsp;'+bdg : '');
+  ad.textContent = wallet.address;
+  sn.innerHTML = wallet.name + (bdg ? '&nbsp;'+bdg : '');
+  sa.textContent = wallet.address;
+  sb.style.display = 'flex';
+  checkMR();
+  updH();
+}
+
+// ══════════════════════════════════════════
+// CHAIN
+// ══════════════════════════════════════════
+function loadChain() {
+  chain = JSON.parse(localStorage.getItem('mc_c') || '[]');
+  updH();
+}
+function saveChain() { localStorage.setItem('mc_c', JSON.stringify(chain)); }
+
+async function createBlock(name, desc, tags, imgHex, memeTips) {
+  var prev = chain.length > 0 ? chain[chain.length-1].hash : '0'.repeat(64);
+  var bd = {
+    index: chain.length, timestamp: Date.now(),
+    name: name, desc: desc, tags: tags, imageHex: imgHex,
+    creator: wallet ? wallet.name : 'anônimo',
+    address: wallet ? wallet.address : null,
+    publicKeyJwk: wallet ? wallet.publicKeyJwk : null,
+    tips: memeTips || (wallet ? wallet.tips : null) || null,
+    nodeAddress: (wallet && wallet.isNode) ? wallet.address : null,
+    isNodeBlock: !!(wallet && wallet.isNode),
+    prevHash: prev
+  };
+  var sig = (wallet && wallet.privateKeyJwk) ? await signD(wallet.privateKeyJwk, JSON.stringify(bd)) : null;
+  var ws = Object.assign({}, bd, {signature: sig});
+  if (wallet && wallet.isNode) {
+    var nd = getNode(wallet.address);
+    if (nd) { nd.blocksValidated++; saveNodes(); }
+  }
+  return Object.assign({}, ws, {hash: await sha256(JSON.stringify(ws))});
+}
+
+async function verifyBlock(blk) {
+  var rest = Object.assign({}, blk);
+  delete rest.hash;
+  var ok = (await sha256(JSON.stringify(rest))) === blk.hash;
+  if (!ok) return {hashOk:false, sigOk:false};
+  var sigOk = false;
+  if (blk.signature && blk.publicKeyJwk) {
+    var nd2 = Object.assign({}, blk);
+    delete nd2.hash; delete nd2.signature;
+    sigOk = await verifySig(blk.publicKeyJwk, JSON.stringify(nd2), blk.signature);
+  }
+  return {hashOk:true, sigOk:sigOk};
+}
+
+async function verifyChain() {
+  for (var i = 0; i < chain.length; i++) {
+    var r = await verifyBlock(chain[i]);
+    if (!r.hashOk) return false;
+    if (i > 0 && chain[i].prevHash !== chain[i-1].hash) return false;
+  }
+  return true;
+}
+
+// ══════════════════════════════════════════
+// IMAGE
+// ══════════════════════════════════════════
+function compressImg(file) {
+  return new Promise(function(res) {
+    var r = new FileReader();
+    r.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var c = document.createElement('canvas');
+        var M = 540, w = img.width, h = img.height;
+        if (w > h) { if (w > M) { h = h*M/w; w = M; } }
+        else { if (h > M) { w = w*M/h; h = M; } }
+        c.width = Math.round(w); c.height = Math.round(h);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        res(c.toDataURL('image/webp', .76));
+      };
+      img.src = e.target.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+function b64hex(b) {
+  var raw = atob(b.split(',')[1] || b), h = '';
+  for (var i = 0; i < raw.length; i++) h += raw.charCodeAt(i).toString(16).padStart(2,'0');
+  return h;
+}
+function hex64(h) {
+  var s = '';
+  for (var i = 0; i < h.length; i+=2) s += String.fromCharCode(parseInt(h.substr(i,2),16));
+  return 'data:image/webp;base64,' + btoa(s);
+}
+function checkMR() {
+  var btn = document.getElementById('MB');
+  if (btn) btn.disabled = !(document.getElementById('MN').value.trim() && imgData && wallet);
+}
+
+// ══════════════════════════════════════════
+// PANELS
+// ══════════════════════════════════════════
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  var panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  document.querySelectorAll('.tab[data-panel="'+name+'"]').forEach(function(t){ t.classList.add('active'); });
+  if (name === 'chain')   renderChain();
+  if (name === 'nodes')   renderNodes();
+  if (name === 'profile') renderProfile();
+}
+
+// ══════════════════════════════════════════
+// RENDER CHAIN
+// ══════════════════════════════════════════
+async function renderChain() {
+  var bl = document.getElementById('BL');
+  document.getElementById('BC').textContent = chain.length;
+  if (!chain.length) {
+    bl.innerHTML = '<div class="empty"><div class="eico">⛓</div><div class="etxt">Chain vazia<br>Minte o primeiro meme</div></div>';
+    return;
+  }
+  var v = await verifyChain();
+  var ci = document.getElementById('CI');
+  ci.innerHTML = v ? '<span class="dot"></span>ÍNTEGRA' : '⚠ CORROMPIDA';
+  ci.className = 'integ' + (v ? '' : ' broken');
+  var rev = chain.slice().reverse();
+  var rows = await Promise.all(rev.map(async function(blk, ri) {
+    var r = await verifyBlock(blk);
+    var mine = wallet && blk.address === wallet.address;
+    var tags = blk.tags && blk.tags.length ? blk.tags.map(function(t){ return '<span class="tag">'+t+'</span>'; }).join('') : '';
+    var prev = blk.imageHex ? '<img class="bprev" src="'+hex64(blk.imageHex)+'" loading="lazy"/>' : '<div class="bpph">🖼</div>';
+    var sigB = blk.signature ? '<span class="'+(r.sigOk?'vok':'vno')+'">'+(r.sigOk?'✓ assinado':'⚠ sig')+'</span>' : '<span style="color:#333">sem assinatura</span>';
+    var nodePill = '';
+    if (blk.isNodeBlock && blk.nodeAddress) {
+      var nd = getNode(blk.nodeAddress);
+      if (nd) nodePill = '<span class="node-pill '+(nd.isFounder?'founder':'regular')+'" data-node="'+blk.nodeAddress+'">'+(nd.isFounder?'★':'')+' '+nd.name+'</span>';
+    }
+    var tipPill = hasTips(blk.tips) ? '<span class="tip-pill" data-blkhash="'+blk.hash+'">💰 gorjeta</span>' : '';
+    var conn = ri < rev.length-1 ? '<div class="bconn"></div>' : '';
+    return '<div class="blk'+(blk.index===0?' genesis':'')+(mine?' mine':'')+'" data-blk="'+blk.index+'">' +
+      '<div class="bidx">#'+blk.index+'</div>' +
+      '<div class="bbody"><div class="bmn">'+blk.name+'</div>' +
+      '<div class="bmeta"><span class="addr">'+blk.creator+'</span><br>'+sigB+' '+nodePill+' '+tipPill+'<br><span style="color:#333">'+new Date(blk.timestamp).toLocaleString('pt-BR')+'</span><br>'+tags+'</div></div>' +
+      prev + '</div>' + conn;
+  }));
+  bl.innerHTML = rows.join('');
+  // bind events on blocks
+  bl.querySelectorAll('.blk').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      if (e.target.closest('.node-pill') || e.target.closest('.tip-pill')) return;
+      openBlk(parseInt(el.dataset.blk));
+    });
+  });
+  bl.querySelectorAll('.node-pill').forEach(function(el) {
+    el.addEventListener('click', function(e) { e.stopPropagation(); openNP(el.dataset.node); });
+  });
+  bl.querySelectorAll('.tip-pill').forEach(function(el) {
+    el.addEventListener('click', function(e) { e.stopPropagation(); openTipModal(el.dataset.blkhash); });
+  });
+}
+
+// ══════════════════════════════════════════
+// RENDER NODES
+// ══════════════════════════════════════════
+function renderNodes() {
+  var nl = document.getElementById('NL');
+  if (!nodes.length) {
+    nl.innerHTML = '<div class="empty"><div class="eico">🖥</div><div class="etxt">Nenhum nó registrado<br>Crie uma carteira e registre o primeiro nó</div></div>';
+    return;
+  }
+  var fn = nodes.filter(function(n){ return n.isFounder; });
+  var rn = nodes.filter(function(n){ return !n.isFounder; });
+  var html = '';
+  if (fn.length) {
+    html += '<div class="slabel" style="margin-bottom:14px">★ Nós Fundadores ('+fn.length+'/'+MAX_FOUNDER+')</div>';
+    html += '<div class="nodes-grid" style="margin-bottom:28px">'+fn.map(nodeCardHtml).join('')+'</div>';
+  }
+  if (rn.length) {
+    html += '<div class="slabel" style="margin-bottom:14px">Validadores</div>';
+    html += '<div class="nodes-grid">'+rn.map(nodeCardHtml).join('')+'</div>';
+  }
+  nl.innerHTML = html;
+  nl.querySelectorAll('.node-card').forEach(function(el) {
+    el.addEventListener('click', function(){ openNP(el.dataset.addr); });
+  });
+}
+function nodeCardHtml(nd) {
+  var ini = nd.name.substring(0,2).toUpperCase();
+  var mc  = chain.filter(function(b){ return b.nodeAddress === nd.address; }).length;
+  var coins = tipCoinsHtml(nd.tips);
+  return '<div class="node-card'+(nd.isFounder?' founder-card':'')+'" data-addr="'+nd.address+'">' +
+    '<div class="nc-top"><div class="nc-av" style="background:'+(nd.color||'#333')+';color:#000">'+ini+'</div>' +
+    '<div><div class="nc-name">'+nd.name+(nd.isFounder?'<span class="badge badge-founder">★ FUNDADOR</span>':'')+
+    '</div><div class="nc-addr">'+nd.address+'</div></div></div>' +
+    (nd.description?'<div class="nc-desc">'+nd.description+'</div>':'')+
+    '<div class="nc-stats"><div class="nc-stat"><b>'+mc+'</b>memes</div><div class="nc-stat"><b>'+(nd.isFounder?'#'+(nodes.indexOf(nd)+1):'—')+'</b>'+(nd.isFounder?'fundador':'validador')+'</div></div>'+
+    (coins?'<div class="nc-coins">'+coins+'</div>':'')+
+    '</div>';
+}
+
+// ══════════════════════════════════════════
+// NODE PROFILE
+// ══════════════════════════════════════════
+function openNP(addr) {
+  var nd = getNode(addr);
+  if (!nd) return;
+  var ini = nd.name.substring(0,2).toUpperCase();
+  var myMemes = chain.filter(function(b){ return b.nodeAddress === addr; });
+  var fi = nodes.filter(function(n){ return n.isFounder; }).findIndex(function(n){ return n.address === addr; });
+  var socials = [
+    nd.twitter   ? '<a class="np-social" href="https://twitter.com/'+nd.twitter.replace('@','')+'" target="_blank">𝕏 '+nd.twitter+'</a>' : '',
+    nd.instagram ? '<a class="np-social" href="https://instagram.com/'+nd.instagram.replace('@','')+'" target="_blank">📸 '+nd.instagram+'</a>' : '',
+    nd.site      ? '<a class="np-social" href="'+nd.site+'" target="_blank">🌐 '+nd.site+'</a>' : ''
+  ].filter(Boolean).join('');
+  var bdg = (nd.isFounder ? '<span class="badge badge-founder" style="font-size:.62rem;padding:3px 8px">★ FUNDADOR #'+(fi+1)+'</span>' : '') +
+            '<span class="badge badge-node" style="font-size:.62rem;padding:3px 8px">🖥 VALIDADOR</span>';
+  var coins = hasTips(nd.tips) ? buildCoinSection(nd.tips) : '';
+  var mg = myMemes.length
+    ? myMemes.map(function(b){ return '<div class="np-meme" data-blk="'+b.index+'"><img src="'+hex64(b.imageHex)+'" loading="lazy"/><div class="np-meme-name">'+b.name+'</div></div>'; }).join('')
+    : '<div class="empty" style="margin-top:0"><div class="eico">🖼</div><div class="etxt">Nenhum meme validado</div></div>';
+  document.getElementById('NPB').innerHTML =
+    '<div class="np-hero'+(nd.isFounder?' is-founder':'')+'">' +
+      '<div class="np-av" style="background:'+(nd.color||'#333')+';color:#000">'+ini+'</div>' +
+      '<div style="flex:1">' +
+        '<div class="np-name">'+nd.name+'</div>' +
+        '<div class="np-addr">'+nd.address+'</div>' +
+        (nd.description?'<div class="np-desc">'+nd.description+'</div>':'')+
+        '<div class="np-badges">'+bdg+'</div>' +
+        (socials?'<div class="np-socials">'+socials+'</div>':'')+
+      '</div></div>' +
+    '<div class="np-stats">' +
+      '<div class="np-stat"><div class="np-stat-val">'+myMemes.length+'</div><div class="np-stat-label">Memes Validados</div></div>' +
+      '<div class="np-stat"><div class="np-stat-val">'+(nd.isFounder?'#'+(fi+1):'—')+'</div><div class="np-stat-label">'+(nd.isFounder?'Fundador':'Validador')+'</div></div>' +
+      '<div class="np-stat"><div class="np-stat-val">'+nodes.length+'</div><div class="np-stat-label">Total Nós</div></div>' +
+      '<div class="np-stat"><div class="np-stat-val">'+new Date(nd.registeredAt).toLocaleDateString('pt-BR')+'</div><div class="np-stat-label">Membro desde</div></div>' +
+    '</div>' +
+    (coins ? '<div style="margin-bottom:28px"><div class="slabel" style="margin-bottom:14px">💰 Gorjetas</div>'+coins+'</div>' : '') +
+    '<div class="slabel">Memes Validados</div>' +
+    '<div class="np-memes-grid">'+mg+'</div>';
+  // bind copy and meme clicks
+  document.getElementById('NPB').querySelectorAll('.tip-addr-box').forEach(bindCopy);
+  document.getElementById('NPB').querySelectorAll('.np-meme').forEach(function(el){
+    el.addEventListener('click', function(){ openBlk(parseInt(el.dataset.blk)); });
+  });
   document.getElementById('NP').classList.add('show');
 }
 
-function buildCoinSection(tips,name,type){
-  if(!hasTips(tips))return'';
-  return`<div style="background:var(--gray);border:1px solid var(--gray3);padding:16px">`+
-    COINS.filter(c=>tips[c.id]).map(c=>`
-      <div class="tip-coin-row">
-        <div class="tip-coin-header"><span class="coin-icon" style="width:28px;height:28px;font-weight:700;font-family:var(--mono);display:flex;align-items:center;justify-content:center;background:var(--black);border:1px solid var(--gray3);font-size:.65rem;color:var(--${c.cls})">${c.icon}</span><span class="tip-coin-name" style="color:var(--${c.cls})">${c.sym}</span></div>
-        <div class="tip-addr-box" onclick="copyAddr(this,'${tips[c.id]}')">${tips[c.id]}<span class="copy-hint">copiar</span></div>
-      </div>).join('')+</div>`;
-}
-
-function openTipModal(blkHash,type){
-  const blk=chain.find(b=>b.hash===blkHash);
-  if(!blk||!hasTips(blk.tips))return;
-  document.getElementById('TIP_TITLE').textContent=💰 GORJETA — ${blk.name};
-  document.getElementById('TIP_BODY').innerHTML=buildCoinSection(blk.tips,blk.creator,'meme');
-  document.getElementById('TIPMOV').classList.add('show');
-}
-
-function copyAddr(el,addr){
-  navigator.clipboard.writeText(addr).then(()=>{el.classList.add('copied');el.querySelector('.copy-hint').textContent='copiado!';setTimeout(()=>{el.classList.remove('copied');el.querySelector('.copy-hint').textContent='copiar';},2000);});
-}
-
-async function openBlk(i){
-  const blk=chain[i];if(!blk)return;
-  const{hashOk,sigOk}=await verifyBlock(blk);
-  const tags=blk.tags?.length?blk.tags.map(t=><span class="tag">${t}</span>).join(''):'—';
-  const img=blk.imageHex?<img class="mimg" src="${hex64(blk.imageHex)}"/>:'';
-  const sigH=blk.signature?<div class="${sigOk?'sigv':'sigx'}">${sigOk?'✓ ASSINATURA VÁLIDA':'⚠ INVÁLIDA'}</div>:<div style="font-family:var(--mono);font-size:.58rem;color:#555;margin-top:5px">Sem assinatura</div>;
-  const nd=blk.nodeAddress?getNode(blk.nodeAddress):null;
-  const nodeSec=nd?<div class="mf"><div class="mfl">Nó Validador</div><div style="display:flex;align-items:center;gap:7px;margin-top:3px"><div style="width:20px;height:20px;border-radius:50%;background:${nd.color||'#333'};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.5rem;font-weight:700;color:#000">${nd.name.substring(0,2).toUpperCase()}</div><span class="mfv">${nd.name} ${nd.isFounder?'<span class="badge badge-founder">★</span>':''}</span></div><button onclick="closeMD();openNP('${nd.address}')" style="margin-top:7px;background:var(--gray2);border:none;color:var(--white);font-family:var(--mono);font-size:.54rem;text-transform:uppercase;letter-spacing:1px;padding:5px 10px;cursor:pointer">Ver perfil do nó →</button></div>:<div class="mf"><div class="mfl">Nó Validador</div><div class="mfv" style="color:#333">—</div></div>;
-  const tipSec=hasTips(blk.tips)?<div class="mf"><div class="mfl">Gorjetas</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:3px">${tipCoinsHtml(blk.tips)}</div><button class="tip-btn" onclick="openTipModal('${blk.hash}','creator')">💰 Ver endereços de gorjeta</button></div>:<div class="mf"><div class="mfl">Gorjetas</div><div class="mfv" style="color:#333">—</div></div>;
-  document.getElementById('MT2').textContent=BLOCO #${blk.index};
-  document.getElementById('MB2').innerHTML=`${img}
-    <div class="mf"><div class="mfl">Meme</div><div class="mfv" style="font-size:.9rem;font-weight:700">${blk.name}</div></div>
-    ${blk.desc?<div class="mf"><div class="mfl">Descrição</div><div class="mfv">${blk.desc}</div></div>:''}
-    <div class="mf"><div class="mfl">Tags</div><div class="mfv">${tags}</div></div>
-    <div class="mf"><div class="mfl">Criador</div><div class="mfv">${blk.creator}</div></div>
-    <div class="mf"><div class="mfl">Endereço</div><div class="mfv y">${blk.address||'—'}</div></div>
-    ${nodeSec}${tipSec}
-    <div class="mf"><div class="mfl">Assinatura</div><div class="mfv" style="color:#444;font-size:.52rem">${blk.signature?blk.signature.substring(0,80)+'...':'—'}</div>${sigH}</div>
-    <div class="mf"><div class="mfl">Hash SHA-256</div><div class="mfv y">${blk.hash}</div></div>
-    <div class="mf"><div class="mfl">Integridade</div><div class="mfv ${hashOk?'g':'r'}">${hashOk?'✓ ÍNTEGRO':'⚠ CORROMPIDO'}</div></div>
-    <div class="mf"><div class="mfl">Data</div><div class="mfv">${new Date(blk.timestamp).toLocaleString('pt-BR')}</div></div>`;
+// ══════════════════════════════════════════
+// OPEN BLOCK MODAL
+// ══════════════════════════════════════════
+async function openBlk(i) {
+  var blk = chain[i];
+  if (!blk) return;
+  var r = await verifyBlock(blk);
+  var tags = blk.tags && blk.tags.length ? blk.tags.map(function(t){ return '<span class="tag">'+t+'</span>'; }).join('') : '—';
+  var img  = blk.imageHex ? '<img class="mimg" src="'+hex64(blk.imageHex)+'"/>' : '';
+  var sigH = blk.signature
+    ? '<div class="'+(r.sigOk?'sigv':'sigx')+'">'+(r.sigOk?'✓ ASSINATURA VÁLIDA':'⚠ INVÁLIDA')+'</div>'
+    : '<div style="font-family:var(--mono);font-size:.58rem;color:#555;margin-top:5px">Sem assinatura</div>';
+  var nd = blk.nodeAddress ? getNode(blk.nodeAddress) : null;
+  var nodeSec = nd
+    ? '<div class="mf"><div class="mfl">Nó Validador</div>' +
+      '<div style="display:flex;align-items:center;gap:7px;margin-top:3px">' +
+      '<div style="width:20px;height:20px;border-radius:50%;background:'+(nd.color||'#333')+';display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.5rem;font-weight:700;color:#000">'+nd.name.substring(0,2).toUpperCase()+'</div>' +
+      '<span class="mfv">'+nd.name+(nd.isFounder?' <span class="badge badge-founder">★</span>':'')+'</span></div>' +
+      '<button class="tip-btn" style="margin-top:7px" data-node-addr="'+nd.address+'">Ver perfil do nó →</button></div>'
+    : '<div class="mf"><div class="mfl">Nó Validador</div><div class="mfv" style="color:#333">—</div></div>';
+  var tipSec = hasTips(blk.tips)
+    ? '<div class="mf"><div class="mfl">Gorjetas</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:3px">'+tipCoinsHtml(blk.tips)+'</div>' +
+      '<button class="tip-btn" data-tip-hash="'+blk.hash+'">💰 Ver endereços</button></div>'
+    : '<div class="mf"><div class="mfl">Gorjetas</div><div class="mfv" style="color:#333">—</div></div>';
+  document.getElementById('MT2').textContent = 'BLOCO #' + blk.index;
+  document.getElementById('MB2').innerHTML = img +
+    '<div class="mf"><div class="mfl">Meme</div><div class="mfv" style="font-size:.9rem;font-weight:700">'+blk.name+'</div></div>' +
+    (blk.desc ? '<div class="mf"><div class="mfl">Descrição</div><div class="mfv">'+blk.desc+'</div></div>' : '') +
+    '<div class="mf"><div class="mfl">Tags</div><div class="mfv">'+tags+'</div></div>' +
+    '<div class="mf"><div class="mfl">Criador</div><div class="mfv">'+blk.creator+'</div></div>' +
+    '<div class="mf"><div class="mfl">Endereço</div><div class="mfv y">'+(blk.address||'—')+'</div></div>' +
+    nodeSec + tipSec +
+    '<div class="mf"><div class="mfl">Assinatura</div><div class="mfv" style="color:#444;font-size:.52rem">'+(blk.signature?blk.signature.substring(0,80)+'...':'—')+'</div>'+sigH+'</div>' +
+    '<div class="mf"><div class="mfl">Hash SHA-256</div><div class="mfv y">'+blk.hash+'</div></div>' +
+    '<div class="mf"><div class="mfl">Integridade</div><div class="mfv '+(r.hashOk?'g':'r')+'">'+(r.hashOk?'✓ ÍNTEGRO':'⚠ CORROMPIDO')+'</div></div>' +
+    '<div class="mf"><div class="mfl">Data</div><div class="mfv">'+new Date(blk.timestamp).toLocaleString('pt-BR')+'</div></div>';
+  // bind buttons inside modal
+  var nodeBtn = document.querySelector('#MB2 [data-node-addr]');
+  if (nodeBtn) nodeBtn.addEventListener('click', function(){ document.getElementById('MOV').classList.remove('show'); openNP(nodeBtn.dataset.nodeAddr); });
+  var tipBtn = document.querySelector('#MB2 [data-tip-hash]');
+  if (tipBtn) tipBtn.addEventListener('click', function(){ openTipModal(tipBtn.dataset.tipHash); });
   document.getElementById('MOV').classList.add('show');
 }
 
-function renderProfile(){
-  const pc=document.getElementById('PC');
-  if(!wallet){pc.innerHTML=<div class="empty"><div class="eico">🔐</div><div class="etxt">Sem carteira ativa</div></div>;return;}
-  const my=chain.filter(b=>b.address===wallet.address);
-  const ini=wallet.name.substring(0,2).toUpperCase(),c=wallet.color;
-  const bdg=nodeBadgesHtml(wallet.address);
-  const nd=getNode(wallet.address);
-  const coins=hasTips(wallet.tips)?buildCoinSection(wallet.tips,wallet.name,'perfil'):'';
-  const mg=my.length?my.map(b=><div class="pmeme" onclick="openBlk(${b.index})"><img src="${hex64(b.imageHex)}"/><div class="pmemen">${b.name}</div></div>).join(''):<div class="empty" style="margin-top:0"><div class="eico">🖼</div><div class="etxt">Nenhum meme mintado</div></div>;
-  const ed=encodeURIComponent(JSON.stringify(wallet));
-  pc.innerHTML=`
-    <div class="phdr">
-      <div class="pavl" style="background:${c};color:#000">${ini}</div>
-      <div style="flex:1">
-        <div class="pname">${wallet.name}${bdg?'&nbsp;'+bdg:''}</div>
-        <div class="paddr">${wallet.address}</div>
-        <div class="pstats"><div class="pstat"><b>${my.length}</b>memes</div><div class="pstat"><b>${chain.length}</b>blocos</div>${nd?<div class="pstat"><b>${nd.blocksValidated||0}</b>validados</div>:''}</div>
-      </div>
-      ${nd?<button onclick="openNP('${wallet.address}')" style="background:var(--gray2);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:.56rem;text-transform:uppercase;letter-spacing:1px;padding:8px 13px;cursor:pointer">Perfil do nó →</button>:''}
-    </div>
-    ${coins?<div class="slabel">💰 Meus endereços de gorjeta</div><div style="margin-bottom:28px">${coins}</div>:''}
-    <div class="slabel">Meus Memes</div>
-    <div class="pmemes" style="margin-bottom:28px">${mg}</div>
-    <div class="slabel">Exportar Carteira</div>
-    <div style="background:var(--gray);border:1px solid var(--gray3);padding:14px;margin-bottom:9px"><div style="font-family:var(--mono);font-size:.56rem;color:#555;line-height:1.9">Guarde em local seguro. <span style="color:var(--red)">Nunca compartilhe a chave privada.</span></div></div>
-    <button onclick="expW('${ed}')" style="background:var(--gray);border:1px solid var(--yellow);color:var(--yellow);font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:2px;padding:9px 14px;cursor:pointer" onmouseover="this.style.background='var(--yellow)';this.style.color='#000'" onmouseout="this.style.background='var(--gray)';this.style.color='var(--yellow)'">↓ BAIXAR CHAVE PRIVADA</button>`;
+// ══════════════════════════════════════════
+// TIP MODAL
+// ══════════════════════════════════════════
+function openTipModal(blkHash) {
+  var blk = chain.find(function(b){ return b.hash === blkHash; });
+  if (!blk || !hasTips(blk.tips)) return;
+  document.getElementById('TIP_TITLE').textContent = '💰 GORJETA — ' + blk.name;
+  document.getElementById('TIP_BODY').innerHTML = buildCoinSection(blk.tips);
+  document.getElementById('TIP_BODY').querySelectorAll('.tip-addr-box').forEach(bindCopy);
+  document.getElementById('TIPMOV').classList.add('show');
+}
+function bindCopy(el) {
+  el.addEventListener('click', function() {
+    var addr = el.dataset.addr;
+    if (!addr) return;
+    navigator.clipboard.writeText(addr).then(function() {
+      el.classList.add('copied');
+      var hint = el.querySelector('.copy-hint');
+      if (hint) hint.textContent = 'copiado!';
+      setTimeout(function(){ el.classList.remove('copied'); if(hint) hint.textContent = 'copiar'; }, 2000);
+    }).catch(function(){ alert('Endereço: ' + addr); });
+  });
 }
 
-function expW(ed){const blob=new Blob([decodeURIComponent(ed)],{type:'application/json'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=mc-wallet-${wallet.name}.json;a.click();URL.revokeObjectURL(u);}
-
-async function doVerify(){
-  const inp=document.getElementById('VI').value.trim();
-  const vr=document.getElementById('VR'),vs=document.getElementById('VS'),vi=document.getElementById('VIM'),vd=document.getElementById('VD');
-  if(!inp)return;
-  const blk=chain.find(b=>b.hash===inp||b.hash.startsWith(inp));
-  if(!blk){vr.className='vres show invalid';vs.textContent='✕ NÃO ENCONTRADO';vi.style.display='none';vd.innerHTML=<p style="font-family:var(--mono);font-size:.66rem;color:#666">Nenhum bloco com esse hash.</p>;return;}
-  const{hashOk,sigOk}=await verifyBlock(blk);
-  vr.className='vres show '+(hashOk?'valid':'invalid');vs.textContent=hashOk?'✓ AUTÊNTICO':'⚠ CORROMPIDO';
-  if(blk.imageHex){vi.src=hex64(blk.imageHex);vi.style.display='block';}else vi.style.display='none';
-  const nd=blk.nodeAddress?getNode(blk.nodeAddress):null;
-  vd.innerHTML=<div class="hdisp"><b>MEME</b>${blk.name}<b>CRIADOR</b>${blk.creator}<b>NÓ</b>${nd?nd.name+(nd.isFounder?' ★':''):' —'}<b>GORJETAS</b>${hasTips(blk.tips)?COINS.filter(c=>blk.tips[c.id]).map(c=>c.sym).join(', '):'—'}<b>ASSINATURA</b><span style="color:${sigOk?'var(--green)':blk.signature?'var(--red)':'#555'}">${blk.signature?(sigOk?'✓ VÁLIDA':'⚠ INVÁLIDA'):'—'}</span><b>INTEGRIDADE</b><span style="color:${hashOk?'var(--green)':'var(--red)'}">${hashOk?'✓ ÍNTEGRO':'⚠ CORROMPIDO'}</span><b>DATA</b>${new Date(blk.timestamp).toLocaleString('pt-BR')}</div>;
+// ══════════════════════════════════════════
+// PROFILE
+// ══════════════════════════════════════════
+function renderProfile() {
+  var pc = document.getElementById('PC');
+  if (!wallet) {
+    pc.innerHTML = '<div class="empty"><div class="eico">🔐</div><div class="etxt">Sem carteira ativa<br>Recarregue para criar uma</div></div>';
+    return;
+  }
+  var my  = chain.filter(function(b){ return b.address === wallet.address; });
+  var ini = wallet.name.substring(0,2).toUpperCase();
+  var c   = wallet.color;
+  var bdg = nodeBadgesHtml(wallet.address);
+  var nd  = getNode(wallet.address);
+  var coins = hasTips(wallet.tips) ? buildCoinSection(wallet.tips) : '';
+  var mg = my.length
+    ? my.map(function(b){ return '<div class="pmeme" data-blk="'+b.index+'"><img src="'+hex64(b.imageHex)+'" loading="lazy"/><div class="pmemen">'+b.name+'</div></div>'; }).join('')
+    : '<div class="empty" style="margin-top:0"><div class="eico">🖼</div><div class="etxt">Nenhum meme mintado</div></div>';
+  pc.innerHTML =
+    '<div class="phdr">' +
+      '<div class="pavl" style="background:'+c+';color:#000">'+ini+'</div>' +
+      '<div style="flex:1">' +
+        '<div class="pname">'+wallet.name+(bdg?'&nbsp;'+bdg:'')+'</div>' +
+        '<div class="paddr">'+wallet.address+'</div>' +
+        '<div class="pstats">' +
+          '<div class="pstat"><b>'+my.length+'</b>memes</div>' +
+          '<div class="pstat"><b>'+chain.length+'</b>blocos</div>' +
+          (nd ? '<div class="pstat"><b>'+(nd.blocksValidated||0)+'</b>validados</div>' : '') +
+        '</div>' +
+      '</div>' +
+      (nd ? '<button class="tip-btn" id="nodeProfileBtn">Perfil do nó →</button>' : '') +
+    '</div>' +
+    (coins ? '<div class="slabel">💰 Meus endereços de gorjeta</div><div style="margin-bottom:28px">'+coins+'</div>' : '') +
+    '<div class="slabel">Meus Memes</div>' +
+    '<div class="pmemes" style="margin-bottom:28px">'+mg+'</div>' +
+    '<div class="slabel">Exportar Carteira</div>' +
+    '<div style="background:var(--gray);border:1px solid var(--gray3);padding:14px;margin-bottom:9px">' +
+      '<div style="font-family:var(--mono);font-size:.56rem;color:#555;line-height:1.9">Guarde em local seguro. <span style="color:var(--red)">Nunca compartilhe a chave privada.</span></div>' +
+    '</div>' +
+    '<button class="wbtn" id="exportWalletBtn" style="max-width:260px;font-size:.7rem;letter-spacing:2px;padding:10px">↓ BAIXAR CHAVE PRIVADA</button>';
+  // bind events
+  pc.querySelectorAll('.tip-addr-box').forEach(bindCopy);
+  pc.querySelectorAll('.pmeme').forEach(function(el){
+    el.addEventListener('click', function(){ openBlk(parseInt(el.dataset.blk)); });
+  });
+  var npBtn = document.getElementById('nodeProfileBtn');
+  if (npBtn) npBtn.addEventListener('click', function(){ openNP(wallet.address); });
+  var expBtn = document.getElementById('exportWalletBtn');
+  if (expBtn) expBtn.addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(wallet)], {type:'application/json'});
+    var u = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = u; a.download = 'mc-wallet-'+wallet.name+'.json';
+    a.click(); URL.revokeObjectURL(u);
+  });
 }
 
-async function updH(){
-  document.getElementById('hB').textContent=chain.length;
-  document.getElementById('hN').textContent=nodes.length;
-  if(chain.length>0){const v=await verifyChain();document.getElementById('hI').textContent=v?'✓ OK':'⚠ ERRO';document.getElementById('hI').style.color=v?'var(--green)':'var(--red)';}
+// ══════════════════════════════════════════
+// VERIFY
+// ══════════════════════════════════════════
+async function doVerify() {
+  var inp = (document.getElementById('VI') || {}).value || '';
+  inp = inp.trim();
+  var vr = document.getElementById('VR'), vs = document.getElementById('VS');
+  var vi = document.getElementById('VIM'), vd = document.getElementById('VD');
+  if (!inp) return;
+  var blk = chain.find(function(b){ return b.hash === inp || b.hash.startsWith(inp); });
+  if (!blk) {
+    vr.className = 'vres show invalid'; vs.textContent = '✕ NÃO ENCONTRADO';
+    vi.style.display = 'none';
+    vd.innerHTML = '<p style="font-family:var(--mono);font-size:.66rem;color:#666">Nenhum bloco com esse hash.</p>';
+    return;
+  }
+  var r = await verifyBlock(blk);
+  vr.className = 'vres show ' + (r.hashOk ? 'valid' : 'invalid');
+  vs.textContent = r.hashOk ? '✓ AUTÊNTICO' : '⚠ CORROMPIDO';
+  if (blk.imageHex) { vi.src = hex64(blk.imageHex); vi.style.display = 'block'; }
+  else vi.style.display = 'none';
+  var nd = blk.nodeAddress ? getNode(blk.nodeAddress) : null;
+  vd.innerHTML = '<div class="hdisp">' +
+    '<b>MEME</b>'+blk.name+
+    '<b>CRIADOR</b>'+blk.creator+
+    '<b>NÓ</b>'+(nd ? nd.name+(nd.isFounder?' ★':'') : '—')+
+    '<b>GORJETAS</b>'+(hasTips(blk.tips) ? COINS.filter(function(c){return blk.tips[c.id];}).map(function(c){return c.sym;}).join(', ') : '—')+
+    '<b>ASSINATURA</b><span style="color:'+(r.sigOk?'var(--green)':blk.signature?'var(--red)':'#555')+'">'+(blk.signature?(r.sigOk?'✓ VÁLIDA':'⚠ INVÁLIDA'):'—')+'</span>'+
+    '<b>INTEGRIDADE</b><span style="color:'+(r.hashOk?'var(--green)':'var(--red)')+'">'+( r.hashOk?'✓ ÍNTEGRO':'⚠ CORROMPIDO')+'</span>'+
+    '<b>DATA</b>'+new Date(blk.timestamp).toLocaleString('pt-BR')+
+    '</div>';
 }
-function closeNP(){document.getElementById('NP').classList.remove('show');}
-function closeM(e){if(e.target===document.getElementById('MOV'))closeMD();}
-function closeMD(){document.getElementById('MOV').classList.remove('show');}
-function closeTipM(e){if(e.target===document.getElementById('TIPMOV'))document.getElementById('TIPMOV').classList.remove('show');}
 
-// ══ EXPOSE TO GLOBAL SCOPE (needed for Vercel / strict mode) ══
-window.wTab=wTab;
-window.createWallet=createWallet;
-window.importWallet=importWallet;
-window.skipW=skipW;
-window.toggleNodeReg=toggleNodeReg;
-window.toggleTip=toggleTip;
-window.handleFile=handleFile;
-window.mintMeme=mintMeme;
-window.showP=showP;
-window.openBlk=openBlk;
-window.openNP=openNP;
-window.closeNP=closeNP;
-window.closeM=closeM;
-window.closeMD=closeMD;
-window.closeTipM=closeTipM;
-window.openTipModal=openTipModal;
-window.copyAddr=copyAddr;
-window.doVerify=doVerify;
-window.expW=expW;
-window.renderProfile=renderProfile;
+// ══════════════════════════════════════════
+// HEADER
+// ══════════════════════════════════════════
+async function updH() {
+  document.getElementById('hB').textContent = chain.length;
+  document.getElementById('hN').textContent = nodes.length;
+  if (chain.length > 0) {
+    var v = await verifyChain();
+    document.getElementById('hI').textContent = v ? '✓ OK' : '⚠ ERRO';
+    document.getElementById('hI').style.color = v ? 'var(--green)' : 'var(--red)';
+  }
+}
 
-// INIT
-loadNodes();
-const sw=localStorage.getItem('mc_w');
-if(sw){try{wallet=JSON.parse(sw);if(wallet.nodeData&&!getNode(wallet.address))registerNode(wallet.nodeData);document.getElementById('WS').classList.add('hidden');updateWUI();loadChain();}catch{localStorage.removeItem('mc_w');}}
+// ══════════════════════════════════════════
+// BIND ALL EVENTS — sem onclick no HTML
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+
+  // wallet tabs
+  document.querySelectorAll('.wtab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.wtab').forEach(function(x){ x.classList.remove('active'); });
+      document.querySelectorAll('.wp').forEach(function(x){ x.classList.remove('active'); });
+      btn.classList.add('active');
+      var panel = document.getElementById('wp-' + btn.dataset.tab);
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // create wallet
+  document.getElementById('createBtn').addEventListener('click', createWallet);
+
+  // import wallet
+  document.getElementById('importBtn').addEventListener('click', importWallet);
+
+  // skip
+  document.getElementById('skipBtn').addEventListener('click', function(){ closeWS(); });
+
+  // node toggle
+  document.getElementById('nodeToggleBtn').addEventListener('click', function() {
+    isNodeReg = !isNodeReg;
+    var chk = document.getElementById('ntCheck');
+    var fld = document.getElementById('nodeFields');
+    if (isNodeReg) { chk.classList.add('on'); fld.classList.add('show'); }
+    else           { chk.classList.remove('on'); fld.classList.remove('show'); }
+  });
+
+  // tip toggle
+  document.getElementById('tipToggleBtn').addEventListener('click', function() {
+    isTipOpen = !isTipOpen;
+    var chk = document.getElementById('tipCheck');
+    var fld = document.getElementById('tipFields');
+    if (isTipOpen) { chk.classList.add('on'); fld.classList.add('show'); }
+    else           { chk.classList.remove('on'); fld.classList.remove('show'); }
+  });
+
+  // tabs
+  document.querySelectorAll('.tab').forEach(function(btn) {
+    btn.addEventListener('click', function(){ showPanel(btn.dataset.panel); });
+  });
+
+  // header profile button
+  document.getElementById('profileBtn').addEventListener('click', function(){ showPanel('profile'); });
+
+  // upload zone
+  document.getElementById('UZ').addEventListener('click', function(){ document.getElementById('fi').click(); });
+  document.getElementById('fi').addEventListener('change', async function(e) {
+    var f = e.target.files[0];
+    if (!f) return;
+    document.getElementById('UPH').style.display = 'none';
+    var pi = document.getElementById('PI');
+    pi.src = URL.createObjectURL(f); pi.style.display = 'block';
+    document.getElementById('UZ').classList.add('has');
+    var compressed = await compressImg(f);
+    imgData = compressed;
+    var kb = Math.round(b64hex(compressed).length/2/1024);
+    var pct = Math.min(100,(kb/400)*100);
+    document.getElementById('szT').innerHTML = '<b style="color:var(--yellow)">'+kb+' KB</b> · WebP';
+    document.getElementById('szF').style.width = pct+'%';
+    document.getElementById('szF').style.background = kb > 300 ? 'var(--red)' : 'var(--yellow)';
+    checkMR();
+  });
+
+  // meme name input
+  document.getElementById('MN').addEventListener('input', checkMR);
+
+  // mint button
+  document.getElementById('MB').addEventListener('click', async function() {
+    if (!wallet || !imgData) return;
+    var name = document.getElementById('MN').value.trim();
+    if (!name) return;
+    var btn = document.getElementById('MB');
+    btn.disabled = true; btn.textContent = 'ASSINANDO...';
+    var memeTips = isTipOpen ? readCoinInputs('m') : null;
+    var effectiveTips = (memeTips || wallet.tips) ? Object.assign({}, wallet.tips||{}, memeTips||{}) : null;
+    // clean empty
+    if (effectiveTips) {
+      COINS.forEach(function(c){ if(!effectiveTips[c.id]) delete effectiveTips[c.id]; });
+      if (!Object.keys(effectiveTips).length) effectiveTips = null;
+    }
+    var blk = await createBlock(
+      name,
+      document.getElementById('MD').value.trim(),
+      document.getElementById('MT').value.trim().split(',').map(function(t){return t.trim();}).filter(Boolean),
+      b64hex(imgData),
+      effectiveTips
+    );
+    chain.push(blk); saveChain();
+    document.getElementById('SH').innerHTML =
+      '<b>HASH</b>'+blk.hash+
+      '<b>BLOCO Nº</b>'+blk.index+
+      '<b>CRIADOR</b>'+blk.creator+
+      '<b>GORJETAS</b>'+(blk.tips ? COINS.filter(function(c){return blk.tips[c.id];}).map(function(c){return c.sym;}).join(', ') : 'nenhuma')+
+      '<b>TIMESTAMP</b>'+new Date(blk.timestamp).toLocaleString('pt-BR');
+    document.getElementById('SUC').classList.add('show');
+    btn.textContent = 'ASSINAR E MINTAR';
+    updH();
+    setTimeout(function() {
+      document.getElementById('MN').value = '';
+      document.getElementById('MD').value = '';
+      document.getElementById('MT').value = '';
+      imgData = null;
+      document.getElementById('UZ').classList.remove('has');
+      document.getElementById('UPH').style.display = 'flex';
+      document.getElementById('PI').style.display = 'none';
+      document.getElementById('szF').style.width = '0%';
+      document.getElementById('szT').style.color = '#555';
+      document.getElementById('szT').textContent = 'Nenhuma imagem carregada';
+      document.getElementById('SUC').classList.remove('show');
+      checkMR();
+    }, 6000);
+  });
+
+  // verify button
+  document.getElementById('verifyBtn').addEventListener('click', doVerify);
+  document.getElementById('VI').addEventListener('keydown', function(e){ if(e.key==='Enter') doVerify(); });
+
+  // modals close
+  document.getElementById('MOV').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
+  document.getElementById('modalCloseBtn').addEventListener('click', function(){ document.getElementById('MOV').classList.remove('show'); });
+  document.getElementById('TIPMOV').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
+  document.getElementById('tipModalCloseBtn').addEventListener('click', function(){ document.getElementById('TIPMOV').classList.remove('show'); });
+  document.getElementById('npCloseBtn').addEventListener('click', function(){ document.getElementById('NP').classList.remove('show'); });
+
+  // INIT
+  loadNodes();
+  var sw = localStorage.getItem('mc_w');
+  if (sw) {
+    try {
+      wallet = JSON.parse(sw);
+      if (wallet.nodeData && !getNode(wallet.address)) registerNode(wallet.nodeData);
+      document.getElementById('WS').classList.add('hidden');
+      updateWUI();
+      loadChain();
+    } catch(e) {
+      localStorage.removeItem('mc_w');
+    }
+  }
+});
 </script>
 </body>
 </html>
